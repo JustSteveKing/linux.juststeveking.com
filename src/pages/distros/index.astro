@@ -61,32 +61,42 @@ const allUseCases = [...new Set(distros.flatMap(d => d.data.use_cases))].sort();
 </Layout>
 
 <script>
-  const total = document.querySelectorAll('.card-wrap').length;
-  const pills  = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
-  const cards  = document.querySelectorAll<HTMLElement>('.card-wrap');
-  const countEl = document.getElementById('visible-count')!;
-  const emptyEl  = document.getElementById('empty-state')!;
-  const resetBtn = document.getElementById('reset-filter')!;
+  function initFilterBar() {
+    const filterBar = document.querySelector<HTMLElement>('.filter-bar');
+    if (!filterBar || filterBar.dataset.bound === 'true') return;
 
-  function applyFilter(filter: string) {
-    let visible = 0;
-    cards.forEach(card => {
-      const uses = card.dataset.uses ?? '';
-      const show = filter === 'all' || uses.split(',').includes(filter);
-      card.classList.toggle('hidden', !show);
-      if (show) visible++;
+    const pills = filterBar.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const cards = document.querySelectorAll<HTMLElement>('.card-wrap');
+    const countEl = document.getElementById('visible-count');
+    const emptyEl = document.getElementById('empty-state');
+    const resetBtn = document.getElementById('reset-filter');
+
+    if (!pills.length || !cards.length || !countEl || !emptyEl || !resetBtn) return;
+
+    const applyFilter = (filter: string) => {
+      let visible = 0;
+      cards.forEach(card => {
+        const uses = card.dataset.uses ?? '';
+        const show = filter === 'all' || uses.split(',').includes(filter);
+        card.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+
+      countEl.textContent = String(visible);
+      emptyEl.classList.toggle('hidden', visible > 0);
+      pills.forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
+    };
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => applyFilter(pill.dataset.filter ?? 'all'));
     });
-    countEl.textContent = String(visible);
-    emptyEl.classList.toggle('hidden', visible > 0);
 
-    pills.forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
+    resetBtn.addEventListener('click', () => applyFilter('all'));
+    filterBar.dataset.bound = 'true';
   }
 
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => applyFilter(pill.dataset.filter ?? 'all'));
-  });
-
-  resetBtn.addEventListener('click', () => applyFilter('all'));
+  initFilterBar();
+  document.addEventListener('astro:page-load', initFilterBar);
 </script>
 
 <style>
