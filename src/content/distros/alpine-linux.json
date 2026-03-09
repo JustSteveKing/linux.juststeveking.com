@@ -1,0 +1,37 @@
+{
+  "name": "Alpine Linux",
+  "tagline": "Tiny, secure, and built for containers and servers",
+  "description": "Alpine Linux is an independent, security-oriented distribution that uses musl libc and BusyBox instead of glibc and GNU coreutils, keeping the base install under 10 MB. Originally designed for embedded systems and network appliances, it has become the default base image for millions of Docker containers. Its apk package manager is extremely fast, and its minimal surface area makes it popular for hardened servers, firewalls, and privacy-sensitive deployments. Desktop use is possible but requires substantial manual configuration.",
+  "website": "https://alpinelinux.org",
+  "release_model": "fixed",
+  "color": "#0D597F",
+  "icon_slug": "alpinelinux",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 1,
+    "stability": 5,
+    "customizability": 5,
+    "out_of_box": 1,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 1,
+    "development": 3,
+    "privacy": 4
+  },
+  "desktop_styles": [
+    "minimal"
+  ],
+  "package_managers": [
+    "apk"
+  ],
+  "desktop_environments": [
+    "None (headless)"
+  ],
+  "use_cases": [
+    "server",
+    "security",
+    "privacy"
+  ],
+  "version": "3.21",
+  "released": "November 2024"
+}

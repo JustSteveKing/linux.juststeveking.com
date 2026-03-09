@@ -1,0 +1,38 @@
+{
+  "name": "Deepin",
+  "tagline": "The most beautiful Linux desktop, built from the ground up",
+  "description": "Deepin is a Debian-based distribution developed by Wuhan Deepin Technology in China, famous for its visually stunning Deepin Desktop Environment (DDE). DDE features smooth animations, a macOS-inspired dock, a unique control centre panel, and a suite of custom apps (music player, movie player, file manager, app store) with a design quality rarely seen in Linux. Deepin has attracted millions of users who prioritise aesthetics and ease of use. The trade-off is that DDE is resource-heavier than most desktop environments and the privacy posture of a Chinese-developed OS warrants consideration.",
+  "website": "https://www.deepin.org",
+  "based_on": "Debian",
+  "release_model": "fixed",
+  "color": "#007CFF",
+  "icon_slug": "deepin",
+  "attributes": {
+    "beginner_friendly": 5,
+    "hardware_requirements": 3,
+    "stability": 3,
+    "customizability": 3,
+    "out_of_box": 5,
+    "documentation": 2,
+    "community": 3,
+    "gaming": 2,
+    "development": 3,
+    "privacy": 2
+  },
+  "desktop_styles": [
+    "mac-like",
+    "unique"
+  ],
+  "package_managers": [
+    "apt"
+  ],
+  "desktop_environments": [
+    "DDE"
+  ],
+  "use_cases": [
+    "general",
+    "creative"
+  ],
+  "version": "23",
+  "released": "November 2023"
+}

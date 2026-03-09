@@ -1,0 +1,37 @@
+{
+  "name": "Fedora Silverblue",
+  "tagline": "Fedora's flagship immutable desktop with atomic updates",
+  "description": "Fedora Silverblue is an immutable variant of Fedora Workstation that replaces the traditional package model with an OSTree-based image. The core OS is read-only and updated atomically \u2014 you can always roll back to the previous working state. User applications live in Flatpak sandboxes, and the optional Toolbox/Distrobox integration lets you run any container as a transparent development environment. Silverblue is the reference implementation for the immutable Linux desktop concept and the upstream for projects like Bazzite and Bluefin. Ideal for developers who want a stable, reproducible base that never breaks.",
+  "website": "https://fedoraproject.org/silverblue",
+  "based_on": "Fedora",
+  "release_model": "fixed",
+  "color": "#3B82F6",
+  "attributes": {
+    "beginner_friendly": 2,
+    "hardware_requirements": 2,
+    "stability": 5,
+    "customizability": 2,
+    "out_of_box": 3,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 3,
+    "development": 5,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "unique"
+  ],
+  "package_managers": [
+    "rpm-ostree",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "GNOME"
+  ],
+  "use_cases": [
+    "development",
+    "general"
+  ],
+  "version": "41",
+  "released": "October 2024"
+}

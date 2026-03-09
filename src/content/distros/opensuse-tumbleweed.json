@@ -1,0 +1,26 @@
+{
+  "name": "openSUSE Tumbleweed",
+  "tagline": "The rolling release distribution",
+  "description": "openSUSE Tumbleweed is a rolling release that stands apart from other rolling distros by running every package update through an automated openQA test suite before it reaches users. This means you get current software without the instability that usually comes with it. The YaST control centre is one of the most comprehensive graphical system-administration tools on Linux, and KDE Plasma support is best-in-class.",
+  "website": "https://get.opensuse.org/tumbleweed",
+
+  "release_model": "rolling",
+  "color": "#73BA25",
+  "icon_slug": "opensuse",
+  "attributes": {
+    "beginner_friendly": 3,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 4,
+    "out_of_box": 3,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 3,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": ["traditional", "windows-like"],
+  "package_managers": ["zypper", "flatpak", "snap"],
+  "desktop_environments": ["KDE Plasma", "GNOME", "Xfce"],
+  "use_cases": ["general", "development"]
+}

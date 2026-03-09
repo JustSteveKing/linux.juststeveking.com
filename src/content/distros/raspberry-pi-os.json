@@ -1,0 +1,38 @@
+{
+  "name": "Raspberry Pi OS",
+  "tagline": "The official OS for Raspberry Pi \u2014 education meets maker culture",
+  "description": "Raspberry Pi OS (formerly Raspbian) is the official operating system for Raspberry Pi single-board computers, maintained by the Raspberry Pi Foundation. Based on Debian, it ships the lightweight PIXEL desktop (built on LXDE/Openbox), Scratch, Python tools, and education software out of the box. It runs flawlessly on ARM hardware from the original Pi to the Pi 5, and the 64-bit edition supports headless server workloads. Its documentation is among the most thorough and welcoming of any Linux project, making it excellent for beginners, students, and anyone exploring physical computing.",
+  "website": "https://www.raspberrypi.com/software",
+  "based_on": "Debian",
+  "release_model": "fixed",
+  "color": "#A22846",
+  "icon_slug": "raspberrypi",
+  "attributes": {
+    "beginner_friendly": 5,
+    "hardware_requirements": 1,
+    "stability": 4,
+    "customizability": 3,
+    "out_of_box": 4,
+    "documentation": 5,
+    "community": 4,
+    "gaming": 2,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like"
+  ],
+  "package_managers": [
+    "apt"
+  ],
+  "desktop_environments": [
+    "PIXEL (LXDE)"
+  ],
+  "use_cases": [
+    "education",
+    "general",
+    "development"
+  ],
+  "version": "Bookworm (12)",
+  "released": "October 2023"
+}

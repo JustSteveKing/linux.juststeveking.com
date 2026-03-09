@@ -1,0 +1,37 @@
+{
+  "name": "Tails",
+  "tagline": "Leave no trace \u2014 the amnesic incognito live system",
+  "description": "Tails is a Debian-based live operating system designed to preserve your privacy and anonymity. Every internet connection is routed through the Tor network, and all system activity vanishes when you shut down \u2014 nothing is written to the host machine's storage unless you explicitly configure an encrypted Persistent Storage volume. Used by journalists, activists, and whistleblowers worldwide, Tails is the gold standard for operational security. It is not designed for permanent installation or everyday computing, but for situations where leaving no trace is non-negotiable.",
+  "website": "https://tails.boum.org",
+  "based_on": "Debian",
+  "release_model": "fixed",
+  "color": "#56347C",
+  "icon_slug": "tails",
+  "attributes": {
+    "beginner_friendly": 2,
+    "hardware_requirements": 2,
+    "stability": 4,
+    "customizability": 2,
+    "out_of_box": 4,
+    "documentation": 5,
+    "community": 3,
+    "gaming": 1,
+    "development": 2,
+    "privacy": 5
+  },
+  "desktop_styles": [
+    "unique"
+  ],
+  "package_managers": [
+    "apt"
+  ],
+  "desktop_environments": [
+    "GNOME"
+  ],
+  "use_cases": [
+    "privacy",
+    "security"
+  ],
+  "version": "6.10",
+  "released": "December 2024"
+}

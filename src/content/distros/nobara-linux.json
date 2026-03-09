@@ -1,0 +1,40 @@
+{
+  "name": "Nobara Linux",
+  "tagline": "GloriousEggroll's gaming-focused Fedora with ProtonGE baked in",
+  "description": "Nobara Linux is a Fedora fork maintained by Thomas Crider (GloriousEggroll), the developer behind Proton-GE \u2014 the custom build of Valve's Proton compatibility layer. Nobara ships with ProtonGE pre-installed, a patched kernel for lower gaming latency, OBS Studio fixes, NVIDIA driver tooling, and a curated set of multimedia codecs that Fedora omits for licensing reasons. It targets gamers and streamers who want Fedora's modern toolchain without the usual post-install configuration work. Updates track Fedora closely, making it more current than most gaming-focused distributions.",
+  "website": "https://nobaraproject.org",
+  "based_on": "Fedora",
+  "release_model": "fixed",
+  "color": "#5C4FE5",
+  "icon_slug": "nobaralinux",
+  "attributes": {
+    "beginner_friendly": 3,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 3,
+    "out_of_box": 5,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 5,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like"
+  ],
+  "package_managers": [
+    "dnf",
+    "rpm"
+  ],
+  "desktop_environments": [
+    "KDE Plasma",
+    "GNOME"
+  ],
+  "use_cases": [
+    "gaming",
+    "general",
+    "development"
+  ],
+  "version": "41",
+  "released": "November 2024"
+}

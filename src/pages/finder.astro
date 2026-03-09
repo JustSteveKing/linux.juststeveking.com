@@ -1,0 +1,954 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const distros = await getCollection('distros');
+
+// Serialise only the fields needed by the scoring algorithm
+const distrosPayload = distros.map(d => ({
+  id: d.id,
+  name: d.data.name,
+  tagline: d.data.tagline,
+  color: d.data.color ?? null,
+  based_on: d.data.based_on ?? null,
+  release_model: d.data.release_model,
+  use_cases: d.data.use_cases,
+  desktop_styles: d.data.desktop_styles,
+  attributes: d.data.attributes,
+}));
+---
+
+<Layout
+  title="Find Your Linux Distribution — DistroFind"
+  description="Answer a few questions and get a ranked list of Linux distributions tailored to your needs."
+>
+  <div class="container page">
+    <header class="page-header">
+      <h1>Find your distribution</h1>
+      <p class="page-subtitle">
+        Answer 6 short questions — we'll score every distribution and rank them for you.
+      </p>
+    </header>
+
+    <div id="finder">
+      <!-- Progress -->
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+        </div>
+        <span class="progress-label" id="progress-label">Step 1 of 6</span>
+      </div>
+
+      <!-- Steps -->
+      <div id="steps">
+
+        <!-- Step 1: Experience -->
+        <div class="step" data-step="1">
+          <h2 class="step-question">What's your experience with Linux?</h2>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="experience" value="beginner" />
+              <div class="option-content">
+                <span class="option-title">Complete beginner</span>
+                <span class="option-desc">I've never used Linux before or have only dabbled briefly</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="experience" value="some" />
+              <div class="option-content">
+                <span class="option-title">Some experience</span>
+                <span class="option-desc">I've used Linux before and know my way around a desktop</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="experience" value="intermediate" />
+              <div class="option-content">
+                <span class="option-title">Comfortable with the terminal</span>
+                <span class="option-desc">I can configure things in the command line and troubleshoot issues</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="experience" value="expert" />
+              <div class="option-content">
+                <span class="option-title">Expert</span>
+                <span class="option-desc">I know exactly what I'm doing and want full control</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 2: Use case -->
+        <div class="step hidden" data-step="2">
+          <h2 class="step-question">What will you mainly use Linux for?</h2>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="use_case" value="general" />
+              <div class="option-content">
+                <span class="option-title">Everyday computing</span>
+                <span class="option-desc">Browsing, email, documents, media</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="gaming" />
+              <div class="option-content">
+                <span class="option-title">Gaming</span>
+                <span class="option-desc">Steam, Proton, native Linux games</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="development" />
+              <div class="option-content">
+                <span class="option-title">Software development</span>
+                <span class="option-desc">Coding, running servers, containers, IDEs</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="security" />
+              <div class="option-content">
+                <span class="option-title">Security research & pentesting</span>
+                <span class="option-desc">Ethical hacking, forensics, CTF competitions</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="server" />
+              <div class="option-content">
+                <span class="option-title">Server / self-hosting</span>
+                <span class="option-desc">Running services, VMs, NAS, home labs</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="privacy" />
+              <div class="option-content">
+                <span class="option-title">Privacy & anonymity</span>
+                <span class="option-desc">Minimising telemetry, avoiding data collection</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="education" />
+              <div class="option-content">
+                <span class="option-title">Education & learning</span>
+                <span class="option-desc">Learning Linux, computing concepts, or for classroom use</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="use_case" value="creative" />
+              <div class="option-content">
+                <span class="option-title">Creative work</span>
+                <span class="option-desc">Design, video editing, audio production</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3: Hardware -->
+        <div class="step hidden" data-step="3">
+          <h2 class="step-question">Describe your hardware situation</h2>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="hardware" value="old" />
+              <div class="option-content">
+                <span class="option-title">Old or low-powered hardware</span>
+                <span class="option-desc">More than 5–6 years old, limited RAM, or a low-end device</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="hardware" value="standard" />
+              <div class="option-content">
+                <span class="option-title">Standard modern hardware</span>
+                <span class="option-desc">A reasonably current laptop or desktop</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="hardware" value="high-end" />
+              <div class="option-content">
+                <span class="option-title">High-end or gaming hardware</span>
+                <span class="option-desc">Dedicated GPU, plenty of RAM, modern CPU</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 4: Update model -->
+        <div class="step hidden" data-step="4">
+          <h2 class="step-question">How do you prefer software updates?</h2>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="release" value="rolling" />
+              <div class="option-content">
+                <span class="option-title">Latest software, always</span>
+                <span class="option-desc">I want the newest packages as soon as they land (rolling release)</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="release" value="stable" />
+              <div class="option-content">
+                <span class="option-title">Tested & stable</span>
+                <span class="option-desc">I'd rather have older, rock-solid packages than the bleeding edge</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="release" value="any" />
+              <div class="option-content">
+                <span class="option-title">No preference</span>
+                <span class="option-desc">I don't mind either way</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 5: Setup preference -->
+        <div class="step hidden" data-step="5">
+          <h2 class="step-question">How much setup work are you comfortable with?</h2>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="setup" value="just_works" />
+              <div class="option-content">
+                <span class="option-title">Just work — right away</span>
+                <span class="option-desc">I want everything ready to go after installation with minimal configuration</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="setup" value="some_config" />
+              <div class="option-content">
+                <span class="option-title">A little configuration is fine</span>
+                <span class="option-desc">I'm happy tweaking things but don't want to build from scratch</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="setup" value="full_control" />
+              <div class="option-content">
+                <span class="option-title">Full control from the ground up</span>
+                <span class="option-desc">I want to decide everything myself and build exactly what I need</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 6: Desktop style -->
+        <div class="step hidden" data-step="6">
+          <h2 class="step-question">Do you have a desktop style preference?</h2>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="desktop_style" value="windows-like" />
+              <div class="option-content">
+                <span class="option-title">Familiar to Windows</span>
+                <span class="option-desc">Taskbar at the bottom, start menu, familiar layout</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="desktop_style" value="mac-like" />
+              <div class="option-content">
+                <span class="option-title">Familiar to macOS</span>
+                <span class="option-desc">Dock, top menu bar, clean and polished feel</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="desktop_style" value="tiling" />
+              <div class="option-content">
+                <span class="option-title">Keyboard-driven / tiling</span>
+                <span class="option-desc">Tiling window managers, minimal mouse usage, maximum efficiency</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="desktop_style" value="any" />
+              <div class="option-content">
+                <span class="option-title">No preference</span>
+                <span class="option-desc">I'll adapt to whatever the distro ships with</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </div><!-- /steps -->
+
+      <!-- Navigation -->
+      <div class="step-nav" id="step-nav">
+        <button class="btn btn-outline" id="btn-back" disabled>Back</button>
+        <button class="btn btn-primary" id="btn-next" disabled>Next</button>
+      </div>
+
+      <!-- Results (hidden until wizard completes) -->
+      <div id="results" class="hidden">
+        <div class="results-header">
+          <h2>Your recommendations</h2>
+          <p class="results-subtitle">Ranked by how well each distribution matches your answers.</p>
+          <button class="btn btn-outline btn-sm" id="btn-restart">Start over</button>
+        </div>
+        <div id="results-grid" class="results-grid"></div>
+      </div>
+
+    </div><!-- /finder -->
+  </div><!-- /container -->
+</Layout>
+
+<!-- Embed distro data at build time for client-side scoring -->
+<script type="application/json" id="distros-data" set:html={JSON.stringify(distrosPayload)}></script>
+
+<script>
+  // ─── Types ─────────────────────────────────────────────────────────────────
+  interface Distro {
+    id: string;
+    name: string;
+    tagline: string;
+    color: string | null;
+    based_on: string | null;
+    release_model: 'rolling' | 'fixed' | 'lts';
+    use_cases: string[];
+    desktop_styles: string[];
+    attributes: {
+      beginner_friendly: number;
+      hardware_requirements: number;
+      stability: number;
+      customizability: number;
+      out_of_box: number;
+      documentation: number;
+      community: number;
+      gaming: number;
+      development: number;
+      privacy: number;
+    };
+  }
+
+  interface Answers {
+    experience: string;
+    use_case: string;
+    hardware: string;
+    release: string;
+    setup: string;
+    desktop_style: string;
+  }
+
+  // ─── Load data ──────────────────────────────────────────────────────────────
+  const dataEl = document.getElementById('distros-data')!;
+  const allDistros: Distro[] = JSON.parse(dataEl.textContent ?? '[]');
+
+  // ─── Scoring algorithm ──────────────────────────────────────────────────────
+  function scoreDistro(distro: Distro, answers: Answers): number {
+    const { attributes, use_cases, desktop_styles, release_model } = distro;
+
+    let totalScore = 0;
+    let totalWeight = 0;
+
+    function add(value: number, weight: number) {
+      // Clamp value to 0–5 range, normalise to 0–1
+      totalScore += (Math.max(0, Math.min(5, value)) / 5) * weight;
+      totalWeight += weight;
+    }
+
+    // ── 1. Experience level ──────────────────────────────────────────────────
+    switch (answers.experience) {
+      case 'beginner':
+        add(attributes.beginner_friendly, 4);
+        add(attributes.out_of_box, 2);
+        add(attributes.community, 1);
+        break;
+      case 'some':
+        add(attributes.beginner_friendly, 2);
+        add(attributes.out_of_box, 1);
+        add(attributes.documentation, 1);
+        break;
+      case 'intermediate':
+        add(attributes.documentation, 2);
+        add(attributes.customizability, 1);
+        break;
+      case 'expert':
+        add(attributes.customizability, 3);
+        // Experts don't need beginner-friendliness — invert it slightly
+        add(6 - attributes.beginner_friendly, 1);
+        break;
+    }
+
+    // ── 2. Use case ──────────────────────────────────────────────────────────
+    // Direct use-case match gives a large bonus
+    if (use_cases.includes(answers.use_case)) {
+      add(5, 5);
+    } else {
+      add(1, 3); // penalise off-use-case distros
+    }
+
+    // Attribute bonus specific to the use case
+    switch (answers.use_case) {
+      case 'gaming':
+        add(attributes.gaming, 4);
+        add(attributes.out_of_box, 1); // drivers etc.
+        break;
+      case 'development':
+        add(attributes.development, 4);
+        add(attributes.documentation, 1);
+        break;
+      case 'privacy':
+        add(attributes.privacy, 4);
+        break;
+      case 'server':
+        add(attributes.stability, 4);
+        add(attributes.documentation, 2);
+        break;
+      case 'security':
+        // Handled by the use-case match above; also reward documentation
+        add(attributes.documentation, 2);
+        break;
+      case 'general':
+      case 'education':
+        add(attributes.beginner_friendly, 2);
+        add(attributes.community, 1);
+        break;
+      case 'creative':
+        add(attributes.out_of_box, 2);
+        add(attributes.community, 1);
+        break;
+    }
+
+    // ── 3. Hardware ──────────────────────────────────────────────────────────
+    switch (answers.hardware) {
+      case 'old':
+        // Lower hardware requirements = better score
+        add(6 - attributes.hardware_requirements, 3);
+        break;
+      case 'high-end':
+        // No strong preference; slight bonus for great out-of-box (GPU drivers etc.)
+        add(attributes.out_of_box, 1);
+        break;
+      // 'standard': no weight
+    }
+
+    // ── 4. Release model ─────────────────────────────────────────────────────
+    switch (answers.release) {
+      case 'rolling':
+        add(release_model === 'rolling' ? 5 : 2, 3);
+        break;
+      case 'stable':
+        add(release_model === 'lts' ? 5 : release_model === 'fixed' ? 4 : 1, 3);
+        add(attributes.stability, 2);
+        break;
+      // 'any': no weight
+    }
+
+    // ── 5. Setup preference ──────────────────────────────────────────────────
+    switch (answers.setup) {
+      case 'just_works':
+        add(attributes.out_of_box, 4);
+        add(attributes.community, 2);
+        break;
+      case 'some_config':
+        add(attributes.out_of_box, 2);
+        add(attributes.customizability, 2);
+        break;
+      case 'full_control':
+        add(attributes.customizability, 4);
+        break;
+    }
+
+    // ── 6. Desktop style ─────────────────────────────────────────────────────
+    if (answers.desktop_style !== 'any') {
+      if (desktop_styles.includes(answers.desktop_style)) {
+        add(5, 3);
+      } else {
+        add(1, 3); // mismatch penalty
+      }
+    }
+
+    return totalWeight > 0 ? (totalScore / totalWeight) * 100 : 50;
+  }
+
+  // ─── Wizard state ──────────────────────────────────────────────────────────
+  const TOTAL_STEPS = 6;
+  let currentStep = 1;
+  const answers: Partial<Answers> = {};
+
+  const stepsContainer = document.getElementById('steps')!;
+  const btnBack = document.getElementById('btn-back') as HTMLButtonElement;
+  const btnNext = document.getElementById('btn-next') as HTMLButtonElement;
+  const progressFill = document.getElementById('progress-fill')!;
+  const progressLabel = document.getElementById('progress-label')!;
+  const progressWrap = document.getElementById('progress-wrap')!;
+  const stepNav = document.getElementById('step-nav')!;
+  const resultsEl = document.getElementById('results')!;
+  const resultsGrid = document.getElementById('results-grid')!;
+  const btnRestart = document.getElementById('btn-restart')!;
+
+  const stepNames: Record<number, keyof Answers> = {
+    1: 'experience',
+    2: 'use_case',
+    3: 'hardware',
+    4: 'release',
+    5: 'setup',
+    6: 'desktop_style',
+  };
+
+  function getStepEl(step: number) {
+    return stepsContainer.querySelector<HTMLElement>(`[data-step="${step}"]`)!;
+  }
+
+  function updateProgress() {
+    const pct = ((currentStep - 1) / TOTAL_STEPS) * 100;
+    progressFill.style.width = `${pct}%`;
+    progressLabel.textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+  }
+
+  function getCurrentValue(): string | null {
+    const name = stepNames[currentStep];
+    const checked = stepsContainer.querySelector<HTMLInputElement>(
+      `input[name="${name}"]:checked`
+    );
+    return checked?.value ?? null;
+  }
+
+  function refreshNextButton() {
+    btnNext.disabled = getCurrentValue() === null;
+  }
+
+  function showStep(step: number) {
+    // Hide all steps
+    stepsContainer.querySelectorAll<HTMLElement>('.step').forEach(el => {
+      el.classList.add('hidden');
+    });
+    getStepEl(step).classList.remove('hidden');
+
+    btnBack.disabled = step === 1;
+    refreshNextButton();
+    updateProgress();
+
+    if (step === TOTAL_STEPS) {
+      btnNext.textContent = 'See results';
+    } else {
+      btnNext.textContent = 'Next';
+    }
+  }
+
+  // Listen to radio changes on all steps
+  stepsContainer.addEventListener('change', () => {
+    const name = stepNames[currentStep];
+    const value = getCurrentValue();
+    if (value) {
+      (answers as Record<string, string>)[name] = value;
+      refreshNextButton();
+    }
+  });
+
+  btnBack.addEventListener('click', () => {
+    if (currentStep > 1) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  });
+
+  btnNext.addEventListener('click', () => {
+    const value = getCurrentValue();
+    if (!value) return;
+
+    const name = stepNames[currentStep];
+    (answers as Record<string, string>)[name] = value;
+
+    if (currentStep < TOTAL_STEPS) {
+      currentStep++;
+      showStep(currentStep);
+    } else {
+      showResults(answers as Answers);
+    }
+  });
+
+  btnRestart.addEventListener('click', () => {
+    stepsContainer.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach(r => {
+      r.checked = false;
+    });
+    Object.keys(answers).forEach(k => delete (answers as Record<string, string>)[k]);
+    currentStep = 1;
+
+    resultsEl.classList.add('hidden');
+    stepNav.classList.remove('hidden');
+    progressWrap.classList.remove('hidden');
+    stepsContainer.classList.remove('hidden');
+
+    showStep(1);
+  });
+
+  // ── Keyboard navigation ───────────────────────────────────────────────────
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    // Only when wizard is active
+    if (stepsContainer.classList.contains('hidden')) return;
+
+    const name = stepNames[currentStep];
+    const radios = Array.from(
+      stepsContainer.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`)
+    );
+    const checkedIdx = radios.findIndex(r => r.checked);
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const next = checkedIdx < radios.length - 1 ? checkedIdx + 1 : 0;
+      radios[next].checked = true;
+      radios[next].dispatchEvent(new Event('change', { bubbles: true }));
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prev = checkedIdx > 0 ? checkedIdx - 1 : radios.length - 1;
+      radios[prev].checked = true;
+      radios[prev].dispatchEvent(new Event('change', { bubbles: true }));
+    } else if (e.key === 'Enter' && !btnNext.disabled) {
+      btnNext.click();
+    }
+  });
+
+  // ── Results ───────────────────────────────────────────────────────────────
+  const MEDALS = ['🥇', '🥈', '🥉'];
+  const MEDAL_COLORS = ['#F59E0B', '#9CA3AF', '#CD7F32'];
+
+  function showResults(ans: Answers) {
+    const scored = allDistros
+      .map(d => ({ distro: d, score: scoreDistro(d, ans) }))
+      .sort((a, b) => b.score - a.score);
+
+    stepsContainer.classList.add('hidden');
+    stepNav.classList.add('hidden');
+    progressWrap.classList.add('hidden');
+
+    resultsGrid.innerHTML = '';
+
+    scored.forEach(({ distro, score }, rank) => {
+      const card = document.createElement('a');
+      card.href = `/distros/${distro.id}`;
+      card.className = 'result-card';
+      if (rank < 3) card.classList.add(`rank-${rank + 1}`);
+
+      const pct = Math.round(score);
+      const iconBg = distro.color ? `background: ${distro.color}20; border-color: ${distro.color}50;` : '';
+      const iconColor = distro.color ? `color: ${distro.color}` : '';
+      const medal = rank < 3 ? `<span class="medal" style="color:${MEDAL_COLORS[rank]}">${MEDALS[rank]}</span>` : `<span class="rank-num">#${rank + 1}</span>`;
+      const releaseLabel = distro.release_model === 'rolling' ? 'Rolling' : distro.release_model === 'lts' ? 'LTS' : 'Fixed';
+
+      card.innerHTML = `
+        <div class="rc-match">
+          ${medal}
+          <div class="rc-bar-track">
+            <div class="rc-bar-fill" style="width: ${pct}%"></div>
+          </div>
+          <span class="rc-pct">${pct}%</span>
+        </div>
+        <div class="rc-body">
+          <div class="rc-icon" style="${iconBg}">
+            <span style="${iconColor}">${distro.name[0]}</span>
+          </div>
+          <div class="rc-info">
+            <span class="rc-name">${distro.name}</span>
+            <span class="rc-tagline">${distro.tagline}</span>
+          </div>
+        </div>
+        <div class="rc-tags">
+          ${distro.use_cases.slice(0, 3).map(uc => `<span class="badge badge-use">${uc}</span>`).join('')}
+          <span class="badge">${releaseLabel}</span>
+        </div>
+      `;
+
+      resultsGrid.appendChild(card);
+    });
+
+    resultsEl.classList.remove('hidden');
+  }
+
+  // Initialise
+  showStep(1);
+</script>
+
+<style>
+  .page {
+    padding: 3.5rem 0 5rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+
+  .page-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  /* ── Progress ── */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.25rem;
+    padding: 0.875rem 1.125rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 5px;
+    background: var(--bg-elevated);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-hover));
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px var(--primary-glow);
+  }
+
+  .progress-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-subtle);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Step ── */
+  .step-question {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition:
+      border-color var(--transition),
+      background var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .option:hover {
+    border-color: color-mix(in srgb, var(--primary) 50%, transparent);
+    background: var(--bg-elevated);
+  }
+
+  .option input[type="radio"] {
+    margin-top: 0.175rem;
+    accent-color: var(--primary);
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+  }
+
+  .option:has(input:checked) {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 7%, var(--bg-surface));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+
+  .option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .option-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .option-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  /* ── Navigation ── */
+  .step-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.75rem;
+    gap: 0.75rem;
+  }
+
+  /* ── Results ── */
+  .results-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .results-header h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .results-subtitle {
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    margin-top: 0.25rem;
+  }
+
+  .results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Result cards rendered by JS */
+  :global(.result-card) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1rem 1.125rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left-width: 3px;
+    border-left-color: var(--border);
+    border-radius: var(--radius-lg);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      border-color var(--transition),
+      transform var(--transition),
+      box-shadow var(--transition);
+  }
+
+  :global(.result-card:hover) {
+    border-color: var(--primary);
+    border-left-color: var(--primary);
+    transform: translateX(3px);
+    box-shadow: -3px 0 12px var(--primary-glow);
+  }
+
+  /* Medal / rank */
+  :global(.medal) {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  :global(.rank-num) {
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-subtle);
+    min-width: 1.5rem;
+    text-align: center;
+  }
+
+  /* Top-3 card accents */
+  :global(.result-card.rank-1) { border-left-color: #F59E0B; }
+  :global(.result-card.rank-2) { border-left-color: #9CA3AF; }
+  :global(.result-card.rank-3) { border-left-color: #CD7F32; }
+
+  :global(.result-card.rank-1:hover) { border-color: #F59E0B; box-shadow: -3px 0 12px rgba(245,158,11,0.25); }
+  :global(.result-card.rank-2:hover) { border-color: #9CA3AF; box-shadow: -3px 0 12px rgba(156,163,175,0.2); }
+  :global(.result-card.rank-3:hover) { border-color: #CD7F32; box-shadow: -3px 0 12px rgba(205,127,50,0.2); }
+
+  :global(.rc-match) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  :global(.rc-bar-track) {
+    flex: 1;
+    height: 3px;
+    background: var(--bg-elevated);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  :global(.rc-bar-fill) {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent));
+    border-radius: 999px;
+  }
+
+  :global(.rc-pct) {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    min-width: 2.75rem;
+    text-align: right;
+    font-family: var(--font-mono);
+  }
+
+  :global(.rc-body) {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  :global(.rc-icon) {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: -0.02em;
+  }
+
+  :global(.rc-info) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  :global(.rc-name) {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  :global(.rc-tagline) {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.rc-tags) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  :global(.badge-use) {
+    color: var(--primary);
+    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+</style>

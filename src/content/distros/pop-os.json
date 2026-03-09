@@ -1,0 +1,41 @@
+{
+  "name": "Pop!_OS",
+  "tagline": "Do the things you love",
+  "description": "Pop!_OS is developed by System76, a Linux hardware company, and it shows \u2014 hardware support is exceptional, especially for NVIDIA GPUs and AMD systems. It ships with a customised GNOME desktop featuring a powerful tiling window manager extension (COSMIC), making it beloved by developers and power users who want productivity without sacrificing aesthetics. Pop!_OS is also a premier gaming distro thanks to its graphics driver tooling.",
+  "website": "https://pop.system76.com",
+  "based_on": "Ubuntu",
+  "release_model": "lts",
+  "color": "#48B9C7",
+  "icon_slug": "popos",
+  "attributes": {
+    "beginner_friendly": 4,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 4,
+    "out_of_box": 5,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 5,
+    "development": 5,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "tiling",
+    "traditional"
+  ],
+  "package_managers": [
+    "apt",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "GNOME (COSMIC)"
+  ],
+  "use_cases": [
+    "general",
+    "gaming",
+    "development",
+    "creative"
+  ],
+  "version": "22.04 LTS",
+  "released": "June 2022"
+}

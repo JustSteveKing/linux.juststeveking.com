@@ -1,0 +1,197 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DistroCard from '../../components/DistroCard.astro';
+import { getCollection } from 'astro:content';
+
+const distros = await getCollection('distros');
+const sorted = distros.sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+// Collect all unique use cases for the filter bar
+const allUseCases = [...new Set(distros.flatMap(d => d.data.use_cases))].sort();
+---
+
+<Layout
+  title="Browse Linux Distributions — DistroFind"
+  description="Explore our curated collection of Linux distributions with detailed attribute scores."
+>
+  <div class="container page">
+    <header class="page-header">
+      <div>
+        <h1>Browse distributions</h1>
+        <p class="page-subtitle">
+          <span id="visible-count">{sorted.length}</span> of {sorted.length} distributions
+        </p>
+      </div>
+      <a href="/finder" class="btn btn-primary btn-sm">Find my distro →</a>
+    </header>
+
+    <!-- Use-case filter -->
+    <div class="filter-bar" role="group" aria-label="Filter by use case">
+      <button class="filter-pill active" data-filter="all">All</button>
+      {allUseCases.map(uc => (
+        <button class="filter-pill" data-filter={uc}>{uc}</button>
+      ))}
+    </div>
+
+    <!-- Grid -->
+    <div class="distro-grid" id="distro-grid">
+      {sorted.map(d => (
+        <div class="card-wrap" data-uses={d.data.use_cases.join(',')}>
+          <DistroCard
+            id={d.id}
+            name={d.data.name}
+            tagline={d.data.tagline}
+            based_on={d.data.based_on}
+            release_model={d.data.release_model}
+            color={d.data.color}
+            icon_slug={d.data.icon_slug}
+            use_cases={d.data.use_cases}
+            attributes={d.data.attributes}
+          />
+        </div>
+      ))}
+    </div>
+
+    <!-- Empty state -->
+    <p class="empty-state hidden" id="empty-state">
+      No distributions match that filter.
+      <button class="reset-link" id="reset-filter">Show all</button>
+    </p>
+  </div>
+</Layout>
+
+<script>
+  const total = document.querySelectorAll('.card-wrap').length;
+  const pills  = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+  const cards  = document.querySelectorAll<HTMLElement>('.card-wrap');
+  const countEl = document.getElementById('visible-count')!;
+  const emptyEl  = document.getElementById('empty-state')!;
+  const resetBtn = document.getElementById('reset-filter')!;
+
+  function applyFilter(filter: string) {
+    let visible = 0;
+    cards.forEach(card => {
+      const uses = card.dataset.uses ?? '';
+      const show = filter === 'all' || uses.split(',').includes(filter);
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    countEl.textContent = String(visible);
+    emptyEl.classList.toggle('hidden', visible > 0);
+
+    pills.forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => applyFilter(pill.dataset.filter ?? 'all'));
+  });
+
+  resetBtn.addEventListener('click', () => applyFilter('all'));
+</script>
+
+<style>
+  .page {
+    padding: 3rem 0 5rem;
+  }
+
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.3rem;
+  }
+
+  .page-subtitle {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+
+  /* ── Filter bar ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .filter-pill {
+    padding: 0.35rem 0.875rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    transition: all var(--transition);
+    text-transform: capitalize;
+    letter-spacing: 0.01em;
+  }
+
+  .filter-pill:hover {
+    border-color: var(--primary);
+    color: var(--text);
+    background: var(--primary-dim);
+  }
+
+  .filter-pill.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 0 12px var(--primary-glow);
+  }
+
+  /* ── Grid ── */
+  .distro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 1rem;
+  }
+
+  .card-wrap {
+    transition: opacity var(--transition), transform var(--transition);
+  }
+
+  .card-wrap.hidden {
+    display: none;
+  }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .empty-state.hidden {
+    display: none;
+  }
+
+  .reset-link {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    margin-left: 0.25rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .reset-link:hover {
+    color: var(--primary-hover);
+  }
+</style>

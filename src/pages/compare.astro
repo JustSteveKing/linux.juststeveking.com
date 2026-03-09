@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { getDistroIcon } from '../utils/icons';
+import CompareTool from '../components/CompareTool.svelte';
+
+const distrosRaw = await getCollection('distros');
+const searchParams = Astro.url.searchParams;
+const initialA = searchParams.get('a');
+const initialB = searchParams.get('b');
+
+// Prepare data for Svelte
+const allDistros = distrosRaw.map(d => ({
+  id: d.id,
+  name: d.data.name,
+  tagline: d.data.tagline,
+  icon_slug: d.data.icon_slug,
+  color: d.data.color || '#7c6cf5',
+  slug: d.id,
+  based_on: d.data.based_on,
+  release_model: d.data.release_model,
+  use_cases: d.data.use_cases,
+  desktop_environments: d.data.desktop_environments,
+  package_managers: d.data.package_managers,
+  attributes: d.data.attributes,
+  iconPath: getDistroIcon(d.data.icon_slug)?.path || '',
+})).sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<Layout title="Compare Distributions — DistroFind">
+  <div class="container compare-page">
+    <header class="page-header">
+      <h1>Compare Distributions</h1>
+      <p class="subtitle">Side-by-side analysis of Linux distributions</p>
+    </header>
+
+    <CompareTool 
+      client:load 
+      allDistros={allDistros} 
+      initialA={initialA} 
+      initialB={initialB} 
+    />
+  </div>
+</Layout>
+
+<style>
+  .compare-page {
+    padding: 3rem 0 6rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+</style>

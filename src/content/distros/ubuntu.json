@@ -1,0 +1,41 @@
+{
+  "name": "Ubuntu",
+  "tagline": "The world's most popular Linux distribution",
+  "description": "Ubuntu is the go-to choice for Linux newcomers. Built on Debian, it ships with a polished GNOME desktop, extensive hardware support, and an enormous community. Canonical provides long-term support (LTS) releases every two years, meaning security patches for five years. The Snap package ecosystem gives access to thousands of apps in a sandboxed format alongside traditional apt packages.",
+  "website": "https://ubuntu.com",
+  "based_on": "Debian",
+  "release_model": "lts",
+  "color": "#E95420",
+  "icon_slug": "ubuntu",
+  "attributes": {
+    "beginner_friendly": 5,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 3,
+    "out_of_box": 4,
+    "documentation": 5,
+    "community": 5,
+    "gaming": 3,
+    "development": 4,
+    "privacy": 2
+  },
+  "desktop_styles": [
+    "traditional",
+    "unique"
+  ],
+  "package_managers": [
+    "apt",
+    "snap",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "GNOME"
+  ],
+  "use_cases": [
+    "general",
+    "development",
+    "education"
+  ],
+  "version": "24.04 LTS",
+  "released": "April 2024"
+}

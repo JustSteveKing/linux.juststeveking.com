@@ -1,0 +1,26 @@
+{
+  "name": "Garuda Linux",
+  "tagline": "Performance-tuned Arch Linux with beautiful KDE defaults",
+  "description": "Garuda Linux is an Arch-based distribution built for performance from the ground up. It ships btrfs snapshots with automatic rollback via Garuda Rescue, a fine-tuned kernel scheduler (linux-zen or bore), out-of-the-box Mesa/Vulkan/DXVK gaming setup, and one of the most visually striking KDE Plasma configurations available. The Dr460nized edition is famous for its Dracula-inspired glassmorphism look. A GUI-driven system installer and dedicated Garuda tools make Arch-level power more accessible than it has any right to be.",
+  "website": "https://garudalinux.org",
+  "based_on": "Arch Linux",
+  "release_model": "rolling",
+  "color": "#8839EF",
+  "icon_slug": "garudalinux",
+  "attributes": {
+    "beginner_friendly": 2,
+    "hardware_requirements": 4,
+    "stability": 3,
+    "customizability": 4,
+    "out_of_box": 5,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 5,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": ["windows-like", "tiling"],
+  "package_managers": ["pacman", "paru"],
+  "desktop_environments": ["KDE Plasma", "Hyprland", "GNOME", "i3"],
+  "use_cases": ["gaming", "development", "general"]
+}

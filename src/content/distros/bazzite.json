@@ -1,0 +1,25 @@
+{
+  "name": "Bazzite",
+  "tagline": "The immutable gaming OS — Steam Deck experience on any PC",
+  "description": "Bazzite is a Fedora-based immutable desktop OS from the Universal Blue project, purpose-built for gaming. It ships with the latest Mesa drivers, Wayland-native gaming stack, HDR support, GameMode, MangoHud, and a pre-configured Proton/Wine environment — all baked into an atomic, read-only base image that updates like a container and can be rolled back instantly if anything breaks. A separate Deck edition mirrors the Steam Deck UI for living-room HTPCs. Bazzite has become one of the fastest-growing Linux distributions in 2024–2025, praised for delivering a console-like gaming experience with zero driver wrangling.",
+  "website": "https://bazzite.gg",
+  "based_on": "Fedora",
+  "release_model": "rolling",
+  "color": "#7C3AED",
+  "attributes": {
+    "beginner_friendly": 4,
+    "hardware_requirements": 3,
+    "stability": 5,
+    "customizability": 2,
+    "out_of_box": 5,
+    "documentation": 4,
+    "community": 4,
+    "gaming": 5,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": ["windows-like"],
+  "package_managers": ["rpm-ostree", "flatpak"],
+  "desktop_environments": ["KDE Plasma", "GNOME"],
+  "use_cases": ["gaming", "general"]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "elementary OS",
+  "tagline": "Fast. Open. And privacy-respecting.",
+  "description": "elementary OS is renowned for its design quality. Its custom Pantheon desktop takes clear inspiration from macOS, with a dock, top bar, and a curated AppCenter for discovering well-designed applications. Every UI decision is made with intention. It is built on Ubuntu LTS for stability, and the team has a strong stance on privacy \u2014 no telemetry, no ads. Ideal for creative professionals and anyone who values aesthetics.",
+  "website": "https://elementary.io",
+  "based_on": "Ubuntu",
+  "release_model": "lts",
+  "color": "#64BAFF",
+  "icon_slug": "elementary",
+  "attributes": {
+    "beginner_friendly": 4,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 2,
+    "out_of_box": 5,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 2,
+    "development": 3,
+    "privacy": 5
+  },
+  "desktop_styles": [
+    "mac-like"
+  ],
+  "package_managers": [
+    "apt",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "Pantheon"
+  ],
+  "use_cases": [
+    "general",
+    "creative",
+    "privacy",
+    "education"
+  ],
+  "version": "7.1",
+  "released": "May 2023"
+}

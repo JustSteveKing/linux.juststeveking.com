@@ -1,0 +1,36 @@
+{
+  "name": "Qubes OS",
+  "tagline": "Security through compartmentalisation \u2014 each task in its own VM",
+  "description": "Qubes OS is a security-focused desktop OS that implements isolation through compartmentalisation: every application, workflow, or trust domain runs in a separate lightweight Xen virtual machine called a qube. Your banking browser, your work email, and your personal files each live in separate qubes that cannot see each other. Network and USB access are handled by dedicated VMs, and a disposable qube can be spun up for untrusted content and discarded when done. Endorsed by Edward Snowden and used by high-risk individuals worldwide, Qubes requires significant RAM and CPU resources and a learning curve, but provides a level of security impossible on a conventional OS.",
+  "website": "https://www.qubes-os.org",
+  "release_model": "fixed",
+  "color": "#3584E4",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 5,
+    "stability": 4,
+    "customizability": 3,
+    "out_of_box": 2,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 1,
+    "development": 3,
+    "privacy": 5
+  },
+  "desktop_styles": [
+    "unique"
+  ],
+  "package_managers": [
+    "dnf",
+    "apt"
+  ],
+  "desktop_environments": [
+    "Xfce"
+  ],
+  "use_cases": [
+    "security",
+    "privacy"
+  ],
+  "version": "4.2",
+  "released": "December 2023"
+}

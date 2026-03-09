@@ -1,0 +1,38 @@
+{
+  "name": "Kubuntu",
+  "tagline": "Ubuntu's rock-solid base paired with KDE Plasma",
+  "description": "Kubuntu is the official Ubuntu flavour shipping KDE Plasma as its default desktop environment. It combines the vast Ubuntu software ecosystem, LTS support cycles, and Canonical's hardware enablement work with Plasma's feature-rich, highly customisable interface. Plasma can be configured to look like Windows, macOS, or something entirely unique, and its performance has improved dramatically in recent releases. Kubuntu is an excellent choice for users coming from Windows who want a familiar layout, developers who want KDE's powerful tooling, or anyone who simply prefers Plasma's approach to desktop computing over GNOME.",
+  "website": "https://kubuntu.org",
+  "based_on": "Ubuntu",
+  "release_model": "lts",
+  "color": "#0079C1",
+  "icon_slug": "kubuntu",
+  "attributes": {
+    "beginner_friendly": 4,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 5,
+    "out_of_box": 4,
+    "documentation": 4,
+    "community": 4,
+    "gaming": 3,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like"
+  ],
+  "package_managers": [
+    "apt"
+  ],
+  "desktop_environments": [
+    "KDE Plasma"
+  ],
+  "use_cases": [
+    "general",
+    "development",
+    "creative"
+  ],
+  "version": "24.04 LTS",
+  "released": "April 2024"
+}

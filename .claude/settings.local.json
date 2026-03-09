@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run:*)",
+      "Bash(bun add:*)",
+      "Bash(node:*)",
+      "WebSearch",
+      "Bash(cat:*)",
+      "Bash(python3:*)"
+    ]
+  }
+}

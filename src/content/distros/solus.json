@@ -1,0 +1,40 @@
+{
+  "name": "Solus",
+  "tagline": "An independent, curated Linux for home computing",
+  "description": "Solus is a fully independent Linux distribution \u2014 not based on Debian, Ubuntu, Arch, or Red Hat \u2014 developed from scratch with a focus on desktop usability and a curated, high-quality software selection. It is the home of the Budgie desktop environment, a modern panel-based desktop inspired by GNOME but lighter and faster. Solus uses its own eopkg package manager and follows a rolling release model with a strong emphasis on stability: updates are held and tested in a staging repository before reaching users. An excellent choice for those who want a polished daily driver without the Ubuntu ecosystem.",
+  "website": "https://getsol.us",
+  "release_model": "rolling",
+  "color": "#5294E2",
+  "icon_slug": "solus",
+  "attributes": {
+    "beginner_friendly": 4,
+    "hardware_requirements": 2,
+    "stability": 4,
+    "customizability": 3,
+    "out_of_box": 5,
+    "documentation": 3,
+    "community": 2,
+    "gaming": 3,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like",
+    "unique"
+  ],
+  "package_managers": [
+    "eopkg"
+  ],
+  "desktop_environments": [
+    "Budgie",
+    "GNOME",
+    "KDE Plasma",
+    "MATE"
+  ],
+  "use_cases": [
+    "general",
+    "development"
+  ],
+  "version": "4.6",
+  "released": "August 2024"
+}

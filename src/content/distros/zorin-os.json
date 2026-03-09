@@ -1,0 +1,39 @@
+{
+  "name": "Zorin OS",
+  "tagline": "The best alternative to Windows and macOS",
+  "description": "Zorin OS is purpose-built for people switching from Windows or macOS. It ships multiple desktop layouts that mimic the look of both operating systems, letting newcomers feel instantly at home. Based on Ubuntu LTS, it inherits exceptional hardware support and the vast apt package ecosystem. The Lite edition runs comfortably on hardware from 2008 onwards, making it a standout choice for reviving older machines.",
+  "website": "https://zorin.com/os",
+  "based_on": "Ubuntu",
+  "release_model": "lts",
+  "color": "#15A6F0",
+  "icon_slug": "zorin",
+  "attributes": {
+    "beginner_friendly": 5,
+    "hardware_requirements": 2,
+    "stability": 5,
+    "customizability": 3,
+    "out_of_box": 5,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 2,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like",
+    "mac-like"
+  ],
+  "package_managers": [
+    "apt",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "GNOME (Zorin Desktop)"
+  ],
+  "use_cases": [
+    "general",
+    "education"
+  ],
+  "version": "17.2",
+  "released": "June 2024"
+}

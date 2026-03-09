@@ -1,0 +1,39 @@
+{
+  "name": "NixOS",
+  "tagline": "Reproducible. Declarative. Reliable.",
+  "description": "NixOS takes a completely different approach to Linux: your entire system \u2014 every package, every config file, every service \u2014 is declared in a single configuration file. This means your system is fully reproducible, trivially rollback-able, and consistent across machines. The Nix package manager is the largest package repository in existence. The learning curve is steep, but the payoff for developers and sysadmins who value reproducibility is enormous.",
+  "website": "https://nixos.org",
+  "release_model": "rolling",
+  "color": "#5277C3",
+  "icon_slug": "nixos",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 2,
+    "stability": 4,
+    "customizability": 5,
+    "out_of_box": 1,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 3,
+    "development": 5,
+    "privacy": 4
+  },
+  "desktop_styles": [
+    "unique",
+    "minimal",
+    "tiling"
+  ],
+  "package_managers": [
+    "nix"
+  ],
+  "desktop_environments": [
+    "Any \u2014 declared in config"
+  ],
+  "use_cases": [
+    "development",
+    "server",
+    "privacy"
+  ],
+  "version": "24.11",
+  "released": "November 2024"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Linux Mint",
+  "tagline": "From freedom came elegance",
+  "description": "Linux Mint is widely regarded as the most approachable Linux distribution for users switching from Windows. Its Cinnamon desktop mirrors the familiar taskbar-and-start-menu layout, while a curated set of pre-installed applications means you can be productive within minutes of installation. It deliberately avoids Snap in favour of Flatpak and apt, keeping the user in control of their software.",
+  "website": "https://linuxmint.com",
+  "based_on": "Ubuntu",
+  "release_model": "lts",
+  "color": "#86BE43",
+  "icon_slug": "linuxmint",
+  "attributes": {
+    "beginner_friendly": 5,
+    "hardware_requirements": 2,
+    "stability": 5,
+    "customizability": 3,
+    "out_of_box": 5,
+    "documentation": 4,
+    "community": 4,
+    "gaming": 2,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like"
+  ],
+  "package_managers": [
+    "apt",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "Cinnamon",
+    "MATE",
+    "Xfce"
+  ],
+  "use_cases": [
+    "general",
+    "education"
+  ],
+  "version": "21.3",
+  "released": "January 2024"
+}

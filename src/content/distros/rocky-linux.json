@@ -1,0 +1,38 @@
+{
+  "name": "Rocky Linux",
+  "tagline": "Enterprise-grade RHEL compatibility, community built",
+  "description": "Rocky Linux is a community-supported, bug-for-bug compatible replacement for Red Hat Enterprise Linux (RHEL), created after CentOS Stream pivoted away from being a downstream rebuild. It targets enterprises, production servers, and organisations that need long-term ABI stability and a predictable, well-tested release cadence. Each major version receives 10 years of support. DNF and the RPM ecosystem are mature and well-understood by administrators worldwide. Not suited for desktop use, but arguably the best free RHEL alternative for server workloads.",
+  "website": "https://rockylinux.org",
+  "release_model": "lts",
+  "color": "#10B981",
+  "icon_slug": "rockylinux",
+  "attributes": {
+    "beginner_friendly": 3,
+    "hardware_requirements": 3,
+    "stability": 5,
+    "customizability": 3,
+    "out_of_box": 3,
+    "documentation": 4,
+    "community": 3,
+    "gaming": 2,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "windows-like"
+  ],
+  "package_managers": [
+    "dnf",
+    "rpm"
+  ],
+  "desktop_environments": [
+    "GNOME"
+  ],
+  "use_cases": [
+    "server",
+    "general",
+    "development"
+  ],
+  "version": "9.5",
+  "released": "November 2024"
+}

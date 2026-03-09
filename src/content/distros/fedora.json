@@ -1,0 +1,42 @@
+{
+  "name": "Fedora",
+  "tagline": "Cutting-edge. Community. Free.",
+  "description": "Fedora is Red Hat's upstream community distribution, delivering the very latest open-source software approximately every six months. It ships an unmodified, upstream GNOME desktop and embraces emerging standards like Wayland and PipeWire early. Fedora is a top choice for developers who want modern toolchains without the friction of a rolling distro, and it serves as the proving ground for Red Hat Enterprise Linux.",
+  "website": "https://fedoraproject.org",
+  "release_model": "fixed",
+  "color": "#51A2DA",
+  "icon_slug": "fedora",
+  "attributes": {
+    "beginner_friendly": 3,
+    "hardware_requirements": 3,
+    "stability": 4,
+    "customizability": 3,
+    "out_of_box": 3,
+    "documentation": 4,
+    "community": 4,
+    "gaming": 3,
+    "development": 5,
+    "privacy": 4
+  },
+  "desktop_styles": [
+    "traditional"
+  ],
+  "package_managers": [
+    "dnf",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "GNOME",
+    "KDE Plasma",
+    "Xfce",
+    "MATE",
+    "Cinnamon"
+  ],
+  "use_cases": [
+    "general",
+    "development",
+    "education"
+  ],
+  "version": "41",
+  "released": "October 2024"
+}

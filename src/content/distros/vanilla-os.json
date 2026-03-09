@@ -1,0 +1,37 @@
+{
+  "name": "VanillaOS",
+  "tagline": "Immutable Debian with a clean GNOME experience",
+  "description": "VanillaOS is a Debian-based immutable desktop that splits the system into an atomic, unmodifiable base and a flexible user layer managed by its own ABroot tool. Package installation is handled via Apx, a layered container system that lets you install software from any distro's repositories without touching the base image. The result is a clean, stock GNOME experience that never accumulates cruft, supports full rollback after updates, and gradually absorbs best practices from the immutable Linux movement. VanillaOS 2 (Orchid) rebuilt the project entirely from scratch with lessons learned from the first release.",
+  "website": "https://vanillaos.org",
+  "based_on": "Debian",
+  "release_model": "fixed",
+  "color": "#F0C53B",
+  "attributes": {
+    "beginner_friendly": 3,
+    "hardware_requirements": 2,
+    "stability": 5,
+    "customizability": 2,
+    "out_of_box": 4,
+    "documentation": 3,
+    "community": 2,
+    "gaming": 3,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "unique"
+  ],
+  "package_managers": [
+    "apt",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "GNOME"
+  ],
+  "use_cases": [
+    "general",
+    "development"
+  ],
+  "version": "2.0 Orchid",
+  "released": "November 2023"
+}

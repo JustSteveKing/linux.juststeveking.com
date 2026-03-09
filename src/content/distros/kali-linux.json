@@ -1,0 +1,38 @@
+{
+  "name": "Kali Linux",
+  "tagline": "The most advanced penetration testing distribution",
+  "description": "Kali Linux is the industry-standard distribution for penetration testing, ethical hacking, and digital forensics. Maintained by Offensive Security, it ships with over 600 pre-installed security tools including Metasploit, Burp Suite, Wireshark, and Nmap. It is not intended as a general-purpose desktop OS \u2014 its tools assume you know how to use them responsibly. Most professionals run it in a VM or dual-boot alongside another distro.",
+  "website": "https://kali.org",
+  "based_on": "Debian",
+  "release_model": "rolling",
+  "color": "#557C94",
+  "icon_slug": "kalilinux",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 2,
+    "stability": 3,
+    "customizability": 4,
+    "out_of_box": 4,
+    "documentation": 5,
+    "community": 4,
+    "gaming": 1,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "traditional"
+  ],
+  "package_managers": [
+    "apt"
+  ],
+  "desktop_environments": [
+    "Xfce",
+    "KDE Plasma",
+    "GNOME"
+  ],
+  "use_cases": [
+    "security"
+  ],
+  "version": "2024.4",
+  "released": "December 2024"
+}

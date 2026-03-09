@@ -1,0 +1,25 @@
+{
+  "name": "Omarchy",
+  "tagline": "Beautiful, modern & opinionated Linux by DHH",
+  "description": "Omarchy is DHH's (creator of Ruby on Rails) fully opinionated Arch Linux workstation — the spiritual successor to his Ubuntu-based Omakub. It ships a complete, hand-curated environment built around Hyprland, Neovim, and a suite of terminal tools, configured exactly as DHH uses daily. Version 2.0 introduced a standalone ISO installer and an AUR-free package set. There are no choices to make: you get the whole stack or nothing. Requires comfort with Arch Linux and the terminal, but rewards you with one of the most polished tiling setups available.",
+  "website": "https://omarchy.org",
+  "based_on": "Arch Linux",
+  "release_model": "rolling",
+  "color": "#BD5CF6",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 3,
+    "stability": 3,
+    "customizability": 4,
+    "out_of_box": 4,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 2,
+    "development": 5,
+    "privacy": 4
+  },
+  "desktop_styles": ["tiling"],
+  "package_managers": ["pacman"],
+  "desktop_environments": ["Hyprland"],
+  "use_cases": ["development"]
+}

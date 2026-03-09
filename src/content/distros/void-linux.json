@@ -1,0 +1,25 @@
+{
+  "name": "Void Linux",
+  "tagline": "A general purpose operating system",
+  "description": "Void Linux is one of the few fully independent Linux distributions — it is not derived from Debian, Arch, or any other base. It uses runit as its init system instead of systemd, which gives faster boot times and a simpler process supervision model. The XBPS package manager is fast and reliable. Void supports both glibc and musl libc, making it popular for embedded and minimal server environments. An excellent choice for experienced users who want to move beyond derivative distros.",
+  "website": "https://voidlinux.org",
+  "release_model": "rolling",
+  "color": "#478061",
+  "icon_slug": "voidlinux",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 1,
+    "stability": 4,
+    "customizability": 5,
+    "out_of_box": 1,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 2,
+    "development": 4,
+    "privacy": 4
+  },
+  "desktop_styles": ["minimal", "tiling"],
+  "package_managers": ["xbps"],
+  "desktop_environments": ["Any — you choose"],
+  "use_cases": ["development", "server", "privacy"]
+}

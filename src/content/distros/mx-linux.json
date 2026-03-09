@@ -1,0 +1,41 @@
+{
+  "name": "MX Linux",
+  "tagline": "Midweight simple stable desktop",
+  "description": "MX Linux is a collaboration between the antiX and MX communities, built on Debian Stable. Its defining feature is MX Tools \u2014 a curated set of graphical utilities for system management, backups, and package handling that makes Debian approachable without hiding its power. The Xfce desktop keeps resource usage low, making it a strong choice for older hardware that still needs a capable, fully-featured environment.",
+  "website": "https://mxlinux.org",
+  "based_on": "Debian",
+  "release_model": "fixed",
+  "color": "#6E8095",
+  "icon_slug": "mxlinux",
+  "attributes": {
+    "beginner_friendly": 4,
+    "hardware_requirements": 2,
+    "stability": 5,
+    "customizability": 3,
+    "out_of_box": 4,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 2,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": [
+    "traditional",
+    "windows-like"
+  ],
+  "package_managers": [
+    "apt",
+    "flatpak"
+  ],
+  "desktop_environments": [
+    "Xfce",
+    "KDE Plasma",
+    "Fluxbox"
+  ],
+  "use_cases": [
+    "general",
+    "education"
+  ],
+  "version": "23.3",
+  "released": "October 2024"
+}

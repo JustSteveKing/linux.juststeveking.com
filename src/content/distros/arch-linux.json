@@ -1,0 +1,26 @@
+{
+  "name": "Arch Linux",
+  "tagline": "A simple, lightweight distribution",
+  "description": "Arch Linux is a minimalist, rolling-release distribution designed to give you exactly what you want — nothing more, nothing less. You build your system from the ground up via a terminal-based installer, choosing every component yourself. This approach yields a deep understanding of your system and a lean, fast installation. The Arch Wiki is legendary and the AUR (Arch User Repository) contains virtually every piece of software imaginable.",
+  "website": "https://archlinux.org",
+
+  "release_model": "rolling",
+  "color": "#1793D1",
+  "icon_slug": "archlinux",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 1,
+    "stability": 2,
+    "customizability": 5,
+    "out_of_box": 1,
+    "documentation": 5,
+    "community": 4,
+    "gaming": 4,
+    "development": 5,
+    "privacy": 4
+  },
+  "desktop_styles": ["minimal", "tiling", "traditional", "windows-like", "mac-like"],
+  "package_managers": ["pacman", "AUR helpers (yay, paru)", "flatpak"],
+  "desktop_environments": ["Any — you choose"],
+  "use_cases": ["general", "development", "gaming", "privacy"]
+}

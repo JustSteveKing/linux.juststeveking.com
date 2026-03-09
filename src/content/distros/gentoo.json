@@ -1,0 +1,25 @@
+{
+  "name": "Gentoo",
+  "tagline": "Compile everything, control everything",
+  "description": "Gentoo is a source-based meta-distribution where every package is compiled locally with USE flags that let you enable or disable individual features. This gives unprecedented control over your system — you can optimise binaries for your exact CPU, eliminate software bloat, and build a system tailored to a single purpose. The legendary Gentoo Handbook is one of the most thorough pieces of Linux documentation in existence. The trade-off is significant compilation time and a steep learning curve, making Gentoo the preserve of experienced users who want to deeply understand their system.",
+  "website": "https://www.gentoo.org",
+  "release_model": "rolling",
+  "color": "#54487A",
+  "icon_slug": "gentoo",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 4,
+    "stability": 4,
+    "customizability": 5,
+    "out_of_box": 1,
+    "documentation": 5,
+    "community": 3,
+    "gaming": 3,
+    "development": 5,
+    "privacy": 4
+  },
+  "desktop_styles": ["minimal", "tiling", "traditional"],
+  "package_managers": ["portage"],
+  "desktop_environments": ["Any (source compiled)"],
+  "use_cases": ["development", "server", "security", "general"]
+}

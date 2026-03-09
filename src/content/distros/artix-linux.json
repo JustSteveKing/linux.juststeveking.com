@@ -1,0 +1,26 @@
+{
+  "name": "Artix Linux",
+  "tagline": "Arch Linux without systemd — your init, your choice",
+  "description": "Artix Linux is an Arch-based distribution that replaces systemd with a choice of alternative init systems: OpenRC, runit, s6, or dinit. For users who object to systemd on philosophical or technical grounds, Artix provides all the power of Arch — the AUR, rolling releases, pacman — with a leaner and more traditional Unix init philosophy. It supports multiple installation flavours from a minimal base to full desktop images. Artix occupies a niche but has a devoted following among those who want full control over their init infrastructure without abandoning the Arch ecosystem.",
+  "website": "https://artixlinux.org",
+  "based_on": "Arch Linux",
+  "release_model": "rolling",
+  "color": "#10A0CC",
+  "icon_slug": "artixlinux",
+  "attributes": {
+    "beginner_friendly": 1,
+    "hardware_requirements": 2,
+    "stability": 3,
+    "customizability": 5,
+    "out_of_box": 1,
+    "documentation": 3,
+    "community": 2,
+    "gaming": 3,
+    "development": 4,
+    "privacy": 4
+  },
+  "desktop_styles": ["minimal", "tiling", "traditional"],
+  "package_managers": ["pacman"],
+  "desktop_environments": ["Any"],
+  "use_cases": ["development", "general", "server"]
+}

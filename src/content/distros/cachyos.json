@@ -1,0 +1,25 @@
+{
+  "name": "CachyOS",
+  "tagline": "Arch Linux with CPU-optimised packages and a fast kernel",
+  "description": "CachyOS is an Arch-based distribution that ships pre-compiled packages optimised for modern CPU microarchitectures (x86-64-v3, x86-64-v4, znver4), meaning you get native-speed binaries without the compilation overhead of Gentoo. It uses the BORE (Burst-Oriented Response Enhancer) scheduler and the CachyOS kernel patchset for lower latency and better gaming frame pacing. A GUI installer, multiple desktop flavours, and a curated selection of performance tweaks make it the fastest and most polished Arch-derivative on DistroWatch's 2025 rankings.",
+  "website": "https://cachyos.org",
+  "based_on": "Arch Linux",
+  "release_model": "rolling",
+  "color": "#00B4D8",
+  "attributes": {
+    "beginner_friendly": 2,
+    "hardware_requirements": 3,
+    "stability": 3,
+    "customizability": 4,
+    "out_of_box": 4,
+    "documentation": 3,
+    "community": 3,
+    "gaming": 5,
+    "development": 4,
+    "privacy": 3
+  },
+  "desktop_styles": ["windows-like", "tiling"],
+  "package_managers": ["pacman", "paru"],
+  "desktop_environments": ["KDE Plasma", "GNOME", "Hyprland", "i3", "Sway"],
+  "use_cases": ["gaming", "development", "general"]
+}
