@@ -42,26 +42,26 @@ const distros = distrosRaw.map(d => ({
     <SEO {title} {description} {image} />
     <ClientRouter />
   </head>
-  <body class="antialiased selection:bg-[var(--accent)] selection:text-black">
+  <body class="antialiased selection:bg-(--accent) selection:text-black">
     <div class="fixed inset-0 pointer-events-none -z-10 opacity-[0.03] mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
 
-    <header class="fixed top-0 inset-x-0 z-50 glass-panel border-b-0 border-b-[var(--border)] border-b">
+    <header class="fixed top-0 inset-x-0 z-50 glass-panel border-b-0 border-b-(--border)">
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="/" class="flex items-center gap-3 text-white no-underline group">
-          <div class="w-8 h-8 rounded-lg bg-black border border-[#333] flex items-center justify-center group-hover:border-[var(--accent)] transition-colors">
-            <span class="font-mono text-[var(--accent)] text-sm font-bold">~</span>
+          <div class="w-8 h-8 rounded-lg bg-black border border-[#333] flex items-center justify-center group-hover:border-(--accent) transition-colors">
+            <span class="font-mono text-(--accent) text-sm font-bold">~</span>
           </div>
           <span class="font-bold tracking-tight text-lg">DistroFind</span>
         </a>
 
         <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-          <a href="/distros" class:list={["transition-colors hover:text-white", currentPath.includes('/distros') ? "text-white" : "text-[var(--text-muted)]"]}>Catalog</a>
-          <a href="/compare" class:list={["transition-colors hover:text-white", currentPath.includes('/compare') ? "text-white" : "text-[var(--text-muted)]"]}>Compare</a>
-          <a href="/finder" class:list={["transition-colors hover:text-white", currentPath.includes('/finder') ? "text-white" : "text-[var(--text-muted)]"]}>Finder</a>
+          <a href="/distros" class:list={["transition-colors hover:text-white", currentPath.includes('/distros') ? "text-white" : "text-(--text-muted)"]}>Catalog</a>
+          <a href="/compare" class:list={["transition-colors hover:text-white", currentPath.includes('/compare') ? "text-white" : "text-(--text-muted)"]}>Compare</a>
+          <a href="/finder" class:list={["transition-colors hover:text-white", currentPath.includes('/finder') ? "text-white" : "text-(--text-muted)"]}>Finder</a>
         </nav>
 
         <div class="flex items-center gap-3">
-          <button id="search-trigger" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#111] border border-[#222] text-[#888] text-xs font-mono hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all">
+          <button id="search-trigger" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#111] border border-[#222] text-[#888] text-xs font-mono hover:border-(--accent) hover:text-(--accent) transition-all">
             <span>Search</span>
             <span class="px-1.5 py-0.5 rounded bg-black border border-[#333]">⌘K</span>
           </button>
@@ -74,17 +74,17 @@ const distros = distrosRaw.map(d => ({
     </header>
 
     <!-- Mobile Menu Drawer -->
-    <div id="mobile-menu" class="fixed inset-0 top-16 bg-[#050505] z-[60] translate-x-full transition-transform duration-500 md:hidden flex flex-col p-8 gap-10 overflow-y-auto invisible">
+    <div id="mobile-menu" class="fixed inset-0 top-16 bg-[#050505] z-60 translate-x-full transition-transform duration-500 md:hidden flex flex-col p-8 gap-10 overflow-y-auto invisible">
       <div class="flex flex-col gap-2">
         <span class="text-[0.6rem] font-mono text-[#444] uppercase tracking-widest font-bold">Navigation_Routes</span>
-        <a href="/distros" class="text-3xl font-black text-white hover:text-[var(--accent)] transition-colors py-4 border-b border-[#111]">Catalog</a>
-        <a href="/compare" class="text-3xl font-black text-white hover:text-[var(--accent)] transition-colors py-4 border-b border-[#111]">Compare</a>
-        <a href="/finder" class="text-3xl font-black text-white hover:text-[var(--accent)] transition-colors py-4 border-b border-[#111]">Finder</a>
+        <a href="/distros" class="text-3xl font-black text-white hover:text-(--accent) transition-colors py-4 border-b border-[#111]">Catalog</a>
+        <a href="/compare" class="text-3xl font-black text-white hover:text-(--accent) transition-colors py-4 border-b border-[#111]">Compare</a>
+        <a href="/finder" class="text-3xl font-black text-white hover:text-(--accent) transition-colors py-4 border-b border-[#111]">Finder</a>
       </div>
       
       <div class="mt-auto pt-8 border-t border-[#111]">
         <div class="flex items-center gap-4 mb-8">
-          <div class="w-10 h-10 rounded-xl bg-[#0a0a0a] border border-[#222] flex items-center justify-center text-[var(--accent)]">
+          <div class="w-10 h-10 rounded-xl bg-[#0a0a0a] border border-[#222] flex items-center justify-center text-(--accent)">
             <span class="font-mono font-bold">~</span>
           </div>
           <span class="font-black text-white uppercase tracking-widest text-xs">DistroFind Engine</span>
@@ -99,13 +99,13 @@ const distros = distrosRaw.map(d => ({
       </div>
     </main>
 
-    <footer class="border-t border-[var(--border)] bg-[#050505]">
+    <footer class="border-t border-(--border) bg-[#050505]">
       <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
         <div class="flex items-center gap-2">
-          <span class="font-mono text-[var(--text-muted)]">root@distrofind:~#</span>
-          <span class="w-2 h-4 bg-[var(--accent)] animate-pulse"></span>
+          <span class="font-mono text-(--text-muted)">root@distrofind:~#</span>
+          <span class="w-2 h-4 bg-(--accent) animate-pulse"></span>
         </div>
-        <p class="text-sm text-[var(--text-muted)]">
+        <p class="text-sm text-(--text-muted)">
           Built for the Linux community. Open source forever.
         </p>
       </div>

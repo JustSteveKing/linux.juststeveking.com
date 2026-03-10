@@ -30,24 +30,24 @@ const delay = `${index * 50}ms`;
 
 <a 
   href={`/distros/${id}`}
-  class="group relative block bento-card-hover p-8 md:p-10 overflow-hidden h-full flex flex-col gap-8 opacity-0 animate-fade-up shadow-2xl shadow-black/40"
+  class="group relative block bento-card-hover p-8 md:p-10 overflow-hidden h-full flex-col gap-8 opacity-0 animate-fade-up shadow-2xl shadow-black/40"
   style={`--distro-color: ${color}; animation-delay: ${delay};`}
 >
-  <div class="absolute -top-12 -right-12 w-48 h-48 bg-[var(--distro-color)] opacity-[0.03] blur-[60px] rounded-full group-hover:opacity-[0.08] transition-opacity duration-700"></div>
+  <div class="absolute -top-12 -right-12 w-48 h-48 bg-(--distro-color) opacity-[0.03] blur-[60px] rounded-full group-hover:opacity-[0.08] transition-opacity duration-700"></div>
   
   <header class="flex items-start justify-between gap-6 relative z-10">
     <div class="flex items-center gap-5">
-      <div class="w-14 h-14 rounded-xl bg-black border border-[#222] flex items-center justify-center group-hover:border-[var(--distro-color)] group-hover:scale-105 transition-all duration-500 shadow-xl">
+      <div class="w-14 h-14 rounded-xl bg-black border border-[#222] flex items-center justify-center group-hover:border-(--distro-color) group-hover:scale-105 transition-all duration-500 shadow-xl">
         {icon ? (
-          <svg viewBox="0 0 24 24" class="w-7 h-7 fill-white group-hover:fill-[var(--distro-color)] transition-colors duration-500">
+          <svg viewBox="0 0 24 24" class="w-7 h-7 fill-white group-hover:fill-(--distro-color)sition-colors duration-500">
             <path d={icon.path} />
           </svg>
         ) : (
-          <span class="text-2xl font-black text-white group-hover:text-[var(--distro-color)] transition-colors duration-500">{name[0]}</span>
+          <span class="text-2xl font-black text-white group-hover:text-(--distro-color) transition-colors duration-500">{name[0]}</span>
         )}
       </div>
       <div>
-        <h3 class="text-xl font-black tracking-tight text-white group-hover:text-[var(--distro-color)] transition-colors duration-500">{name}</h3>
+        <h3 class="text-xl font-black tracking-tight text-white group-hover:text-(--distro-color) transition-colors duration-500">{name}</h3>
         <p class="text-[0.65rem] font-mono text-[#666] uppercase tracking-[0.2em] mt-1">{releaseLabel} Build</p>
       </div>
     </div>
@@ -65,7 +65,7 @@ const delay = `${index * 50}ms`;
       </div>
       <div class="flex gap-1.5 h-1">
         {Array.from({ length: 5 }, (_, i) => (
-          <div class:list={["flex-1 rounded-full transition-all duration-700", i < attributes.beginner_friendly ? "bg-white group-hover:bg-[var(--distro-color)] shadow-[0_0_10px_var(--distro-color)]" : "bg-[#111]"]}></div>
+          <div class:list={["flex-1 rounded-full transition-all duration-700", i < attributes.beginner_friendly ? "bg-white group-hover:bg-(--distro-color) shadow-[0_0_10px_var(--distro-color)]" : "bg-[#111]"]}></div>
         ))}
       </div>
     </div>
@@ -76,7 +76,7 @@ const delay = `${index * 50}ms`;
       </div>
       <div class="flex gap-1.5 h-1">
         {Array.from({ length: 5 }, (_, i) => (
-          <div class:list={["flex-1 rounded-full transition-all duration-700", i < attributes.development ? "bg-white group-hover:bg-[var(--distro-color)] shadow-[0_0_10px_var(--distro-color)]" : "bg-[#111]"]}></div>
+          <div class:list={["flex-1 rounded-full transition-all duration-700", i < attributes.development ? "bg-white group-hover:bg-(--distro-color) shadow-[0_0_10px_var(--distro-color)]" : "bg-[#111]"]}></div>
         ))}
       </div>
     </div>
