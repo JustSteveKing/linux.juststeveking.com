@@ -147,7 +147,6 @@
               style="--distro-color: {d.color || 'var(--primary)'}"
               on:mouseenter={() => selectedIndex = i}
             >
-              <div class="item-accent" aria-hidden="true"></div>
               <div class="item-header">
                 <div class="item-icon-wrapper" aria-hidden="true">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -237,7 +236,19 @@
     padding: 1.125rem 1.25rem; border-radius: var(--radius-lg); background: var(--bg-surface);
     border: 1px solid var(--border); text-decoration: none; color: inherit;
     transition: transform var(--transition), border-color var(--transition), background var(--transition);
-    overflow: hidden;
+  }
+
+  .palette-item::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0.65rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--distro-color);
+    opacity: 0.45;
+    transition: opacity var(--transition);
+    pointer-events: none;
   }
 
   .palette-item.selected {
@@ -246,11 +257,9 @@
     transform: scale(1.01);
   }
 
-  .item-accent {
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: var(--distro-color); opacity: 0.4; transition: opacity var(--transition);
+  .palette-item.selected::before {
+    opacity: 1;
   }
-  .palette-item.selected .item-accent { opacity: 1; }
 
   .item-header { display: flex; align-items: flex-start; gap: 0.875rem; }
 
