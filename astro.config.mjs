@@ -6,5 +6,6 @@ import svelte from '@astrojs/svelte';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://linux.juststeveking.com',
+
   integrations: [svelte()]
 });
