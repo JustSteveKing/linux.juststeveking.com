@@ -167,7 +167,12 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
        <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl p-8 flex flex-col gap-8 shadow-xl">
-          <h3 class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">System_Specs</h3>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-black border border-[#222] flex items-center justify-center text-[var(--accent)]">
+               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg>
+            </div>
+            <h3 class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">System_Specs</h3>
+          </div>
           <div class="space-y-6">
             <div class="space-y-3">
               <span class="text-[0.6rem] font-mono text-[#666] uppercase tracking-widest block">Package_Managers</span>
@@ -199,7 +204,12 @@
        </div>
 
        <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl p-8 flex flex-col gap-8 shadow-xl">
-          <h3 class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">UX_Environments</h3>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-black border border-[#222] flex items-center justify-center text-[var(--accent)]">
+               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            </div>
+            <h3 class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">UX_Environments</h3>
+          </div>
           <div class="grid grid-cols-2 gap-6">
              <div class="space-y-3">
                 <span class="text-[0.6rem] font-mono text-[#666] uppercase tracking-widest text-center block">{distroA.name}</span>
@@ -219,6 +229,27 @@
              </div>
           </div>
        </div>
+    </div>
+
+    <!-- Algorithmic Transparency -->
+    <div class="p-8 rounded-2xl border border-[#222] bg-[#0a0a0a]/50 text-sm text-[#888] leading-relaxed animate-fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] shadow-[0_0_20px_var(--accent-glow)]">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <h4 class="text-white font-black uppercase tracking-widest text-xs">Differential_Scoring_Methodology</h4>
+      </div>
+      <p class="mb-4">The telemetry grid above visualizes the <span class="text-white font-bold italic">normalized performance delta</span> between the two target nodes. Every metric is indexed on a 1-5 scale derived from objective technical metadata:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div class="p-4 rounded-xl border border-white/5 bg-black/40">
+           <strong class="text-white block mb-1 text-[0.6rem] uppercase tracking-widest">Normalization</strong>
+           Data points are normalized against global community baselines to ensure cross-architecture compatibility.
+        </div>
+        <div class="p-4 rounded-xl border border-white/5 bg-black/40">
+           <strong class="text-white block mb-1 text-[0.6rem] uppercase tracking-widest">Neutrality</strong>
+           No candidate receives promotional weighting. All scores are purely algorithmic and based on verified registry data.
+        </div>
+      </div>
     </div>
 
     <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">

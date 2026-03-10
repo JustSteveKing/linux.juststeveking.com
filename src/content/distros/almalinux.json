@@ -1,0 +1,26 @@
+{
+  "name": "AlmaLinux",
+  "tagline": "The community-owned enterprise OS",
+  "description": "AlmaLinux is a community-owned and governed open-source enterprise-grade Linux distribution that is 1:1 binary compatible with RHEL. It was created as a stable, long-term replacement for the discontinued CentOS stable branch. It is backed by a non-profit foundation and is designed for mission-critical workloads in cloud, data center, and enterprise environments.",
+  "website": "https://almalinux.org",
+  "release_model": "lts",
+  "based_on": "RHEL",
+  "color": "#D43E41",
+  "icon_slug": "almalinux",
+  "attributes": {
+    "beginner_friendly": 2,
+    "hardware_requirements": 3,
+    "stability": 5,
+    "customizability": 2,
+    "out_of_box": 3,
+    "documentation": 5,
+    "community": 4,
+    "gaming": 1,
+    "development": 4,
+    "privacy": 4
+  },
+  "desktop_styles": ["traditional"],
+  "package_managers": ["dnf"],
+  "desktop_environments": ["GNOME", "KDE Plasma", "Xfce"],
+  "use_cases": ["server", "infrastructure"]
+}

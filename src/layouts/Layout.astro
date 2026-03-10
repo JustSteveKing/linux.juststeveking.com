@@ -43,7 +43,7 @@ const distros = distrosRaw.map(d => ({
     <ViewTransitions />
   </head>
   <body class="antialiased selection:bg-[var(--accent)] selection:text-black">
-    <div class="fixed inset-0 pointer-events-none -z-10 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
+    <div class="fixed inset-0 pointer-events-none -z-10 opacity-[0.03] mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
 
     <header class="fixed top-0 inset-x-0 z-50 glass-panel border-b-0 border-b-[var(--border)] border-b">
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -65,9 +65,33 @@ const distros = distrosRaw.map(d => ({
             <span>Search</span>
             <span class="px-1.5 py-0.5 rounded bg-black border border-[#333]">⌘K</span>
           </button>
+          <button id="mobile-menu-trigger" class="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1.5 text-white cursor-pointer" aria-label="Toggle Menu">
+            <span class="w-5 h-0.5 bg-current transition-all duration-300 origin-center" id="m-t-1"></span>
+            <span class="w-5 h-0.5 bg-current transition-all duration-300 origin-center" id="m-t-2"></span>
+          </button>
         </div>
       </div>
     </header>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu" class="fixed inset-0 top-16 bg-[#050505] z-[60] translate-x-full transition-transform duration-500 md:hidden flex flex-col p-8 gap-10 overflow-y-auto invisible">
+      <div class="flex flex-col gap-2">
+        <span class="text-[0.6rem] font-mono text-[#444] uppercase tracking-widest font-bold">Navigation_Routes</span>
+        <a href="/distros" class="text-3xl font-black text-white hover:text-[var(--accent)] transition-colors py-4 border-b border-[#111]">Catalog</a>
+        <a href="/compare" class="text-3xl font-black text-white hover:text-[var(--accent)] transition-colors py-4 border-b border-[#111]">Compare</a>
+        <a href="/finder" class="text-3xl font-black text-white hover:text-[var(--accent)] transition-colors py-4 border-b border-[#111]">Finder</a>
+      </div>
+      
+      <div class="mt-auto pt-8 border-t border-[#111]">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-10 h-10 rounded-xl bg-[#0a0a0a] border border-[#222] flex items-center justify-center text-[var(--accent)]">
+            <span class="font-mono font-bold">~</span>
+          </div>
+          <span class="font-black text-white uppercase tracking-widest text-xs">DistroFind Engine</span>
+        </div>
+        <p class="text-xs text-[#555] font-medium leading-relaxed">Algorithmic discovery for the Linux community. Open source forever.</p>
+      </div>
+    </div>
 
     <main class="min-h-screen pt-24 pb-20">
       <div class="max-w-7xl mx-auto px-6">
@@ -90,10 +114,51 @@ const distros = distrosRaw.map(d => ({
     <CommandPalette client:load distros={distros} />
 
     <script>
-      const searchTrigger = document.getElementById('search-trigger');
-      searchTrigger?.addEventListener('click', () => {
-        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
-      });
+      function initLayout() {
+        const searchTrigger = document.getElementById('search-trigger');
+        searchTrigger?.addEventListener('click', () => {
+          window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
+        });
+
+        // Mobile Menu Logic
+        const menuTrigger = document.getElementById('mobile-menu-trigger');
+        const menu = document.getElementById('mobile-menu');
+        const t1 = document.getElementById('m-t-1');
+        const t2 = document.getElementById('m-t-2');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+          isMenuOpen = !isMenuOpen;
+          if (menu) {
+            menu.classList.toggle('translate-x-full', !isMenuOpen);
+            // Ensure visibility when opening
+            menu.style.visibility = isMenuOpen ? 'visible' : 'hidden';
+          }
+          document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+          
+          // Transform hamburger to X
+          if (t1 && t2) {
+            t1.style.transform = isMenuOpen ? 'rotate(45deg) translateY(4px)' : '';
+            t2.style.transform = isMenuOpen ? 'rotate(-45deg) translateY(-4px)' : '';
+          }
+        }
+
+        // Remove existing listener if any (to prevent multiple)
+        menuTrigger?.removeEventListener('click', toggleMenu);
+        menuTrigger?.addEventListener('click', toggleMenu);
+
+        // Close menu on link click
+        const menuLinks = menu?.querySelectorAll('a');
+        menuLinks?.forEach(link => {
+          link.addEventListener('click', () => {
+            if (isMenuOpen) toggleMenu();
+          });
+        });
+      }
+
+      // Initialize on load and after ogni swap
+      initLayout();
+      document.addEventListener('astro:page-load', initLayout);
     </script>
   </body>
 </html>

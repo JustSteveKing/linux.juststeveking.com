@@ -1,0 +1,26 @@
+{
+  "name": "Parrot OS",
+  "tagline": "Security, privacy, and development",
+  "description": "Parrot OS is a Debian-based Linux distribution designed for security professionals, developers, and privacy-conscious users. It provides a complete laboratory for a wide range of cyber-security operations, from penetration testing to digital forensics and reverse engineering. Unlike other security distros, Parrot OS also focuses heavily on development tools and is intended to be used as a primary workstation.",
+  "website": "https://parrotsec.org",
+  "release_model": "rolling",
+  "based_on": "Debian",
+  "color": "#00CCFF",
+  "icon_slug": "parrotsecurity",
+  "attributes": {
+    "beginner_friendly": 3,
+    "hardware_requirements": 2,
+    "stability": 4,
+    "customizability": 4,
+    "out_of_box": 4,
+    "documentation": 4,
+    "community": 4,
+    "gaming": 2,
+    "development": 5,
+    "privacy": 5
+  },
+  "desktop_styles": ["traditional", "minimal"],
+  "package_managers": ["apt", "flatpak"],
+  "desktop_environments": ["MATE", "KDE Plasma", "Xfce"],
+  "use_cases": ["security", "development", "privacy"]
+}

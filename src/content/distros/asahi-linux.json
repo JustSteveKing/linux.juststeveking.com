@@ -1,0 +1,26 @@
+{
+  "name": "Asahi Linux",
+  "tagline": "Linux on Apple Silicon",
+  "description": "Asahi Linux is a project and community with the goal of porting Linux to Apple Silicon Macs, starting with the 2020 M1 Mac Mini, MacBook Air, and MacBook Pro. The goal is not just to make Linux run on these machines but to polish it to the point where it can be used as a daily driver. The project provides a custom installer and a highly optimized kernel and drivers to leverage the performance of Apple's ARM-based architecture.",
+  "website": "https://asahilinux.org",
+  "release_model": "rolling",
+  "based_on": "Arch Linux ARM",
+  "color": "#DE3A3A",
+  "icon_slug": "asahilinux",
+  "attributes": {
+    "beginner_friendly": 2,
+    "hardware_requirements": 1,
+    "stability": 3,
+    "customizability": 4,
+    "out_of_box": 2,
+    "documentation": 4,
+    "community": 4,
+    "gaming": 2,
+    "development": 5,
+    "privacy": 4
+  },
+  "desktop_styles": ["tiling", "traditional", "minimal"],
+  "package_managers": ["pacman"],
+  "desktop_environments": ["KDE Plasma", "GNOME", "Sway"],
+  "use_cases": ["general", "development"]
+}

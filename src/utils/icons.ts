@@ -25,6 +25,10 @@ import {
   siDeepin,
   siArtixlinux,
   siKubuntu,
+  siAsahilinux,
+  siSteamos,
+  siParrotsecurity,
+  siAlmalinux,
 } from 'simple-icons';
 
 /** Subset of the simple-icons icon shape we use. */
@@ -63,6 +67,10 @@ const iconMap: Record<string, DistroIcon> = {
   deepin:            siDeepin        as DistroIcon,
   artixlinux:        siArtixlinux    as DistroIcon,
   kubuntu:           siKubuntu       as DistroIcon,
+  asahilinux:        siAsahilinux    as DistroIcon,
+  steamos:           siSteamos       as DistroIcon,
+  parrotsecurity:    siParrotsecurity as DistroIcon,
+  almalinux:         siAlmalinux     as DistroIcon,
 };
 
 export function getDistroIcon(slug: string | undefined): DistroIcon | null {

@@ -137,8 +137,8 @@ const distrosPayload = distros.map(d => ({
         </div>
 
         <div class="flex justify-between items-center mt-12 pt-10 border-t border-[#222]" id="step-nav">
-          <button id="btn-back" class="px-6 py-2 text-sm font-bold font-mono text-[#444] hover:text-white disabled:opacity-0 transition-all cursor-pointer">BACK_TRK</button>
-          <button id="btn-next" class="px-8 py-3 bg-white text-black rounded-lg text-sm font-black hover:bg-[var(--accent)] hover:shadow-[0_0_30px_var(--accent-glow)] disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer" disabled>NEXT_STP →</button>
+          <button id="btn-back" type="button" class="px-6 py-2 text-sm font-bold font-mono text-[#444] hover:text-white disabled:opacity-0 transition-all cursor-pointer">BACK_TRK</button>
+          <button id="btn-next" type="button" class="px-8 py-3 bg-white text-black rounded-lg text-sm font-black hover:bg-[var(--accent)] hover:shadow-[0_0_30px_var(--accent-glow)] disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer" disabled>NEXT_STP →</button>
         </div>
       </Box>
 
@@ -147,13 +147,13 @@ const distrosPayload = distros.map(d => ({
         <Box padding="lg" class="border-[var(--accent)] relative overflow-hidden shadow-[0_0_50px_rgba(0,255,102,0.05)]">
           <div class="absolute top-0 right-0 w-96 h-96 bg-[var(--accent)] opacity-[0.03] blur-[120px]"></div>
           
-          <div class="flex items-center justify-between mb-10 border-b border-[#222] pb-10">
+          <div class="flex items-center justify-between mb-10 border-b border-[#222] pb-10 relative z-10">
             <div>
               <h2 class="text-3xl font-black text-white tracking-tighter">Sequence_Matched</h2>
               <p class="text-[#666] font-mono text-xs mt-2 uppercase tracking-widest font-bold">Top compatible candidates identified.</p>
             </div>
-            <button id="btn-restart" class="w-12 h-12 rounded-lg bg-[#0a0a0a] border border-[#222] flex items-center justify-center text-[#444] hover:text-white hover:border-[#444] transition-all cursor-pointer shadow-lg" title="Restart Sequence">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <button id="btn-restart" type="button" class="relative z-50 w-12 h-12 rounded-lg bg-[#0a0a0a] border border-[#222] flex items-center justify-center text-[#444] hover:text-white hover:border-[#444] transition-all cursor-pointer shadow-lg" title="Restart Sequence">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             </button>
           </div>
 
@@ -183,13 +183,37 @@ const distrosPayload = distros.map(d => ({
     let score = 0, weight = 0;
     const add = (v: number, w: number) => { score += (Math.max(0, Math.min(5, v)) / 5) * w; weight += w; };
 
+    // Step 1: Experience
     switch (answers.experience) {
       case 'beginner': add(attributes.beginner_friendly, 4); break;
-      case 'some': add(attributes.beginner_friendly, 2); break;
-      case 'intermediate': add(attributes.documentation, 2); break;
+      case 'some': add(attributes.beginner_friendly, 2); add(attributes.out_of_box, 2); break;
+      case 'intermediate': add(attributes.documentation, 2); add(attributes.customizability, 2); break;
       case 'expert': add(attributes.customizability, 4); break;
     }
-    if (use_cases.includes(answers.use_case)) add(5, 5); else add(1, 3);
+
+    // Step 2: Use Case
+    if (use_cases.includes(answers.use_case)) {
+      add(5, 5); 
+    } else {
+      add(1, 3);
+    }
+
+    // Step 3: Hardware
+    const hwReq = attributes.hardware_requirements ?? 3;
+    if (answers.hardware === 'old') {
+      add(6 - hwReq, 3); 
+    } else if (answers.hardware === 'standard') {
+      add(hwReq <= 3 ? 5 : 2, 2);
+    } else {
+      add(5, 1); 
+    }
+
+    // Step 4: Updates
+    if (answers.release === 'rolling') {
+      add(release_model === 'rolling' ? 5 : 1, 3);
+    } else if (answers.release === 'stable') {
+      add(release_model !== 'rolling' ? 5 : 1, 3);
+    }
     
     return weight > 0 ? (score / weight) * 100 : 50;
   }
@@ -214,7 +238,7 @@ const distrosPayload = distros.map(d => ({
     btnBack.disabled = currentStep === 1;
     const name = stepNames[currentStep as keyof typeof stepNames];
     btnNext.disabled = !stepsContainer.querySelector(`input[name="${name}"]:checked`);
-    btnNext.textContent = currentStep === TOTAL_STEPS ? 'RE_MATCH()' : 'NEXT_STP →';
+    btnNext.textContent = currentStep === TOTAL_STEPS ? 'COMPUTE_MATCHES()' : 'NEXT_STP →';
   }
 
   stepsContainer.addEventListener('change', () => {
@@ -231,18 +255,32 @@ const distrosPayload = distros.map(d => ({
     else showResults();
   });
 
-  document.getElementById('btn-restart')?.addEventListener('click', () => {
+  // Robust Restart Logic
+  document.getElementById('btn-restart')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Reset state
     currentStep = 1;
-    stepsContainer.querySelectorAll('input').forEach(i => i.checked = false);
+    Object.keys(answers).forEach(k => delete answers[k]);
+    
+    // Clear all radio inputs in the finder
+    document.querySelectorAll('#finder input[type="radio"]').forEach((i: any) => {
+      i.checked = false;
+    });
+    
+    // Toggle visibility
     document.getElementById('results')?.classList.add('hidden');
     stepsContainer.classList.remove('hidden');
     document.getElementById('progress-wrap')?.classList.remove('hidden');
+    
     updateUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   function showResults() {
     const scored = allDistros.map((d: any) => ({ distro: d, score: scoreDistro(d, answers) }))
-      .sort((a: any, b: any) => b.score - a.score);
+      .sort((a: any, b: any) => b.score - a.score)
+      .slice(0, 5);
 
     stepsContainer.classList.add('hidden');
     document.getElementById('progress-wrap')?.classList.add('hidden');
@@ -265,6 +303,41 @@ const distrosPayload = distros.map(d => ({
         </a>
       `;
     });
+
+    grid.innerHTML += `
+      <div class="mt-12 p-8 rounded-2xl border border-[#222] bg-[#0a0a0a]/50 text-sm text-[#888] leading-relaxed animate-fade-in" style="animation-delay: 600ms">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-xl bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] shadow-[0_0_20px_var(--accent-glow)]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <h4 class="text-white font-black uppercase tracking-widest text-xs">Algorithmic_Transparency</h4>
+        </div>
+        <p class="mb-6">The compatibility percentage is calculated using a <span class="text-white font-bold italic">weighted multi-factor matching engine</span>. We analyze your inputs across four key vectors to determine the mathematical distance between your profile and each distribution's architecture:</p>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+          <li class="flex gap-4">
+            <span class="text-[var(--accent)] font-mono font-bold text-lg leading-none">01.</span>
+            <div><strong class="text-white block mb-1 text-[0.7rem] uppercase tracking-[0.2em]">Experience_Level</strong> Match based on beginner-friendliness vs. technical documentation and customizability.</div>
+          </li>
+          <li class="flex gap-4">
+            <span class="text-[var(--accent)] font-mono font-bold text-lg leading-none">02.</span>
+            <div><strong class="text-white block mb-1 text-[0.7rem] uppercase tracking-[0.2em]">Primary_Objectives</strong> Direct mapping of your specific use-cases to verified distribution capabilities.</div>
+          </li>
+          <li class="flex gap-4">
+            <span class="text-[var(--accent)] font-mono font-bold text-lg leading-none">03.</span>
+            <div><strong class="text-white block mb-1 text-[0.7rem] uppercase tracking-[0.2em]">Hardware_Resources</strong> Optimization based on the distribution's baseline system requirements and footprint.</div>
+          </li>
+          <li class="flex gap-4">
+            <span class="text-[var(--accent)] font-mono font-bold text-lg leading-none">04.</span>
+            <div><strong class="text-white block mb-1 text-[0.7rem] uppercase tracking-[0.2em]">Update_Paradigm</strong> Alignment with your preference for bleeding-edge rolling releases vs. LTS stability.</div>
+          </li>
+        </ul>
+        <div class="mt-8 pt-6 border-t border-white/5 text-[0.7rem] flex items-start gap-3">
+          <span class="text-[var(--accent)] text-lg">⌬</span>
+          <span class="mt-1 font-medium">Results are based on objective metadata collected from distribution maintainers and community consensus. No promotional bias is applied to any candidate.</span>
+        </div>
+      </div>
+    `;
+
     document.getElementById('results')?.classList.remove('hidden');
   }
 

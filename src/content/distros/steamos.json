@@ -1,0 +1,26 @@
+{
+  "name": "SteamOS",
+  "tagline": "The console experience for Linux",
+  "description": "SteamOS 3 is an Arch-based, immutable operating system developed by Valve for the Steam Deck. It features a custom Game Mode based on Gamescope, providing a handheld console interface, and a standard KDE Plasma desktop for traditional PC use. It leverages Flatpak for applications and provides a seamless, validated gaming experience through Proton. It is designed for reliability and ease of use in gaming-centric hardware.",
+  "website": "https://store.steampowered.com/steamos",
+  "release_model": "fixed",
+  "based_on": "Arch Linux",
+  "color": "#171a21",
+  "icon_slug": "steamos",
+  "attributes": {
+    "beginner_friendly": 5,
+    "hardware_requirements": 3,
+    "stability": 5,
+    "customizability": 2,
+    "out_of_box": 5,
+    "documentation": 3,
+    "community": 5,
+    "gaming": 5,
+    "development": 3,
+    "privacy": 3
+  },
+  "desktop_styles": ["traditional", "console"],
+  "package_managers": ["pacman (read-only)", "flatpak"],
+  "desktop_environments": ["KDE Plasma", "Game Mode (Gamescope)"],
+  "use_cases": ["gaming", "general"]
+}
