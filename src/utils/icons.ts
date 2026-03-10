@@ -26,7 +26,7 @@ import {
   siArtixlinux,
   siKubuntu,
   siAsahilinux,
-  siSteamos,
+  siSteam,
   siParrotsecurity,
   siAlmalinux,
 } from 'simple-icons';
@@ -68,7 +68,7 @@ const iconMap: Record<string, DistroIcon> = {
   artixlinux:        siArtixlinux    as DistroIcon,
   kubuntu:           siKubuntu       as DistroIcon,
   asahilinux:        siAsahilinux    as DistroIcon,
-  steamos:           siSteamos       as DistroIcon,
+  steamos:           siSteam       as DistroIcon,
   parrotsecurity:    siParrotsecurity as DistroIcon,
   almalinux:         siAlmalinux     as DistroIcon,
 };

@@ -37,12 +37,12 @@ const distroSchema = z.object({
   }),
 
   desktop_styles: z.array(
-    z.enum(['windows-like', 'mac-like', 'minimal', 'traditional', 'tiling', 'unique'])
+    z.enum(['windows-like', 'mac-like', 'minimal', 'traditional', 'tiling', 'unique', 'console'])
   ),
   package_managers: z.array(z.string()),
   desktop_environments: z.array(z.string()),
   use_cases: z.array(
-    z.enum(['general', 'gaming', 'development', 'security', 'server', 'privacy', 'education', 'creative'])
+    z.enum(['general', 'gaming', 'development', 'security', 'server', 'privacy', 'education', 'creative', 'infrastructure'])
   ),
 
   /** Accent colour used in the UI (hex) */

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "bun run generate-og && astro build",
+    "build": "astro build",
     "preview": "bun run build && wrangler dev",
     "deploy": "bun run build && wrangler deploy",
     "generate-og": "bun scripts/generate-og.ts",
