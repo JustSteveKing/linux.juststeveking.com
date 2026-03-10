@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
-  import { fade, fly, slide } from 'svelte/transition';
+  import { onMount } from 'svelte';
+  import { fade, fly } from 'svelte/transition';
   import { cubicOut } from 'svelte/easing';
 
   interface Distro {
@@ -19,44 +19,43 @@
     iconPath: string;
   }
 
-  export let allDistros: Distro[] = [];
-  export let initialA: string | null = null;
-  export let initialB: string | null = null;
+  export let distros: Distro[] = [];
+  
+  let selectedAId: string | null = null;
+  let selectedBId: string | null = null;
 
-  let selectedAId = initialA;
-  let selectedBId = initialB;
-
-  $: distroA = allDistros.find(d => d.id === selectedAId) || null;
-  $: distroB = allDistros.find(d => d.id === selectedBId) || null;
+  $: distroA = distros.find(d => d.id === selectedAId) || null;
+  $: distroB = distros.find(d => d.id === selectedBId) || null;
 
   const attributeLabels: Record<string, string> = {
-    beginner_friendly: 'Beginner-friendly',
-    hardware_requirements: 'Hardware requirements',
-    stability: 'Stability',
-    customizability: 'Customizability',
-    out_of_box: 'Out-of-box',
-    documentation: 'Documentation',
-    community: 'Community',
-    gaming: 'Gaming',
-    development: 'Development',
-    privacy: 'Privacy',
+    beginner_friendly: 'UX/Beginner',
+    hardware_requirements: 'HW_Specs',
+    stability: 'Core_Stability',
+    customizability: 'Custom_Depth',
+    out_of_box: 'OOBE_Index',
+    documentation: 'Doc_Quality',
+    community: 'Net_Volume',
+    gaming: 'Gaming_Ops',
+    development: 'Dev_Tooling',
+    privacy: 'Privacy_Vector',
   };
 
   const attributeKeys = Object.keys(attributeLabels);
 
   function updateUrl() {
+    if (typeof window === 'undefined') return;
     const url = new URL(window.location.href);
     if (selectedAId) url.searchParams.set('a', selectedAId); else url.searchParams.delete('a');
     if (selectedBId) url.searchParams.set('b', selectedBId); else url.searchParams.delete('b');
     window.history.replaceState({}, '', url.toString());
   }
 
-  $: if (selectedAId !== undefined || selectedBId !== undefined) {
-    if (typeof window !== 'undefined') updateUrl();
-  }
+  $: if (selectedAId !== undefined || selectedBId !== undefined) { updateUrl(); }
 
-  // Handle browser back/forward
   onMount(() => {
+    const params = new URLSearchParams(window.location.search);
+    selectedAId = params.get('a');
+    selectedBId = params.get('b');
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
       selectedAId = params.get('a');
@@ -67,56 +66,58 @@
   });
 </script>
 
-<div class="selection-grid">
+<div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-8 mb-16">
   <!-- Selector A -->
-  <div class="selector-card" style="--distro-color: {distroA?.color || 'var(--border)'}">
-    <label for="select-a">Distribution A</label>
-    <select id="select-a" class="distro-select" bind:value={selectedAId}>
-      <option value={null}>Select a distribution...</option>
-      {#each allDistros as d}
+  <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl p-8 flex flex-col gap-6 transition-all duration-500 shadow-2xl relative overflow-hidden" style="border-top: 4px solid {distroA?.color || '#222'}">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-[var(--d-color)] opacity-[0.03] blur-[60px]" style="--d-color: {distroA?.color}"></div>
+    <label for="select-a" class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">NODE_A.select()</label>
+    <select id="select-a" class="bg-black border border-[#222] text-white p-4 rounded-xl font-bold text-lg outline-none cursor-pointer focus:border-[var(--accent)] transition-all shadow-inner" bind:value={selectedAId}>
+      <option value={null}>Select_Target...</option>
+      {#each distros as d}
         <option value={d.id}>{d.name}</option>
       {/each}
     </select>
     {#if distroA}
-      <div class="selected-preview" in:fade>
-         <div class="preview-icon">
+      <div class="flex items-center gap-5 p-5 bg-white/[0.02] rounded-2xl border border-white/[0.05]" in:fade>
+         <div class="w-14 h-14 shrink-0 flex items-center justify-center bg-black border border-[#222] rounded-xl text-[var(--distro-color)] shadow-xl" style="--distro-color: {distroA.color}">
             {#if distroA.iconPath}
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d={distroA.iconPath} /></svg>
+              <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current"><path d={distroA.iconPath} /></svg>
             {:else}
-              <span>{distroA.name[0]}</span>
+              <span class="font-black text-xl">{distroA.name[0]}</span>
             {/if}
          </div>
-         <div class="preview-text">
-            <span class="preview-name">{distroA.name}</span>
-            <span class="preview-tagline">{distroA.tagline}</span>
+         <div class="min-w-0">
+            <span class="block font-black text-xl text-white tracking-tight">{distroA.name}</span>
+            <span class="block text-sm text-[#666] truncate font-medium mt-1">{distroA.tagline}</span>
          </div>
       </div>
     {/if}
   </div>
 
-  <div class="vs-divider">VS</div>
+  <div class="font-mono font-black text-[var(--accent)] text-2xl bg-black w-16 h-16 flex items-center justify-center rounded-2xl border-2 border-[var(--accent)] shadow-[0_0_30px_var(--accent-glow)] max-md:mx-auto text-glow">VS</div>
 
   <!-- Selector B -->
-  <div class="selector-card" style="--distro-color: {distroB?.color || 'var(--border)'}">
-    <label for="select-b">Distribution B</label>
-    <select id="select-b" class="distro-select" bind:value={selectedBId}>
-      <option value={null}>Select a distribution...</option>
-      {#each allDistros as d}
+  <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl p-8 flex flex-col gap-6 transition-all duration-500 shadow-2xl relative overflow-hidden" style="border-top: 4px solid {distroB?.color || '#222'}">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-[var(--d-color)] opacity-[0.03] blur-[60px]" style="--d-color: {distroB?.color}"></div>
+    <label for="select-b" class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">NODE_B.select()</label>
+    <select id="select-b" class="bg-black border border-[#222] text-white p-4 rounded-xl font-bold text-lg outline-none cursor-pointer focus:border-[var(--accent)] transition-all shadow-inner" bind:value={selectedBId}>
+      <option value={null}>Select_Target...</option>
+      {#each distros as d}
         <option value={d.id}>{d.name}</option>
       {/each}
     </select>
     {#if distroB}
-      <div class="selected-preview" in:fade>
-         <div class="preview-icon">
+      <div class="flex items-center gap-5 p-5 bg-white/[0.02] rounded-2xl border border-white/[0.05]" in:fade>
+         <div class="w-14 h-14 shrink-0 flex items-center justify-center bg-black border border-[#222] rounded-xl text-[var(--distro-color)] shadow-xl" style="--distro-color: {distroB.color}">
             {#if distroB.iconPath}
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d={distroB.iconPath} /></svg>
+              <svg viewBox="0 0 24 24" class="w-7 h-7 fill-current"><path d={distroB.iconPath} /></svg>
             {:else}
-              <span>{distroB.name[0]}</span>
+              <span class="font-black text-xl">{distroB.name[0]}</span>
             {/if}
          </div>
-         <div class="preview-text">
-            <span class="preview-name">{distroB.name}</span>
-            <span class="preview-tagline">{distroB.tagline}</span>
+         <div class="min-w-0">
+            <span class="block font-black text-xl text-white tracking-tight">{distroB.name}</span>
+            <span class="block text-sm text-[#666] truncate font-medium mt-1">{distroB.tagline}</span>
          </div>
       </div>
     {/if}
@@ -124,401 +125,118 @@
 </div>
 
 {#if distroA && distroB}
-  <div class="comparison-content" in:fly={{ y: 20, duration: 400, easing: cubicOut }}>
-    <!-- Attributes Table -->
-    <section class="comparison-section">
-      <h2 class="section-title">Attribute Comparison</h2>
-      <div class="comparison-table-wrapper">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th>Attribute</th>
-              <th style="color: {distroA.color}">{distroA.name}</th>
-              <th style="color: {distroB.color}">{distroB.name}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each attributeKeys as key}
-              <tr>
-                <td class="attr-name">{attributeLabels[key]}</td>
-                <td>
-                  <div class="score-cell">
-                    <div class="score-pips">
-                      {#each Array(5) as _, i}
-                        <span class="pip" class:on={i < distroA.attributes[key]} style="--p-color: {distroA.color}"></span>
-                      {/each}
-                    </div>
-                    <span class="score-num">{distroA.attributes[key]}/5</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="score-cell">
-                    <div class="score-pips">
-                      {#each Array(5) as _, i}
-                        <span class="pip" class:on={i < distroB.attributes[key]} style="--p-color: {distroB.color}"></span>
-                      {/each}
-                    </div>
-                    <span class="score-num">{distroB.attributes[key]}/5</span>
-                  </div>
-                </td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
+  <div class="space-y-12 animate-fade-in" in:fly={{ y: 20, duration: 600, easing: cubicOut }}>
+    
+    <div class="bg-[#0a0a0a] border border-[#222] rounded-3xl overflow-hidden shadow-2xl">
+      <div class="p-8 border-b border-[#222] bg-black/40">
+        <h2 class="text-xs font-mono font-bold uppercase tracking-[0.4em] text-[#444] text-center">Differential_Telemetry_Grid</h2>
       </div>
-    </section>
-
-    <!-- Technical Specs -->
-    <div class="specs-grid">
-       <section class="spec-card">
-          <h3>Base System</h3>
-          <div class="spec-comparison">
-             <div class="spec-val">
-                <span class="spec-label">{distroA.name}</span>
-                <span class="badge">{distroA.based_on || 'Independent'}</span>
-             </div>
-             <div class="spec-val">
-                <span class="spec-label">{distroB.name}</span>
-                <span class="badge">{distroB.based_on || 'Independent'}</span>
-             </div>
-          </div>
-       </section>
-
-       <section class="spec-card">
-          <h3>Release Model</h3>
-          <div class="spec-comparison">
-             <div class="spec-val">
-                <span class="spec-label">{distroA.name}</span>
-                <span class="badge">{distroA.release_model.toUpperCase()}</span>
-             </div>
-             <div class="spec-val">
-                <span class="spec-label">{distroB.name}</span>
-                <span class="badge">{distroB.release_model.toUpperCase()}</span>
-             </div>
-          </div>
-       </section>
-
-       <section class="spec-card">
-          <h3>Desktop Environments</h3>
-          <div class="spec-comparison-cols">
-             <div class="spec-col">
-                <span class="spec-label">{distroA.name}</span>
-                <ul class="spec-list">
-                  {#each distroA.desktop_environments as de}
-                    <li>{de}</li>
-                  {/each}
-                </ul>
-             </div>
-             <div class="spec-col">
-                <span class="spec-label">{distroB.name}</span>
-                <ul class="spec-list">
-                  {#each distroB.desktop_environments as de}
-                    <li>{de}</li>
-                  {/each}
-                </ul>
-             </div>
-          </div>
-       </section>
-
-       <section class="spec-card">
-          <h3>Package Managers</h3>
-          <div class="spec-comparison-cols">
-             <div class="spec-col">
-                <span class="spec-label">{distroA.name}</span>
-                <div class="tags">
-                  {#each distroA.package_managers as pm}
-                    <code class="pm-code">{pm}</code>
-                  {/each}
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-black">
+            <th class="p-6 text-left text-[0.65rem] font-mono uppercase tracking-widest text-[#444] border-b border-[#222]">Vector</th>
+            <th class="p-6 text-left text-xl font-black border-b border-[#222] tracking-tighter" style="color: {distroA.color}">{distroA.name}</th>
+            <th class="p-6 text-left text-xl font-black border-b border-[#222] tracking-tighter" style="color: {distroB.color}">{distroB.name}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each attributeKeys as key}
+            <tr class="group hover:bg-white/[0.02] transition-colors">
+              <td class="p-5 px-8 border-b border-[#1a1a1a] font-mono text-[0.7rem] uppercase tracking-wider text-[#666] group-hover:text-white transition-colors">{attributeLabels[key]}</td>
+              <td class="p-5 px-8 border-b border-[#1a1a1a]">
+                <div class="flex items-center gap-4">
+                  <div class="flex-1 h-1.5 bg-[#111] rounded-full overflow-hidden max-w-[120px]">
+                    <div class="h-full rounded-full transition-all duration-1000" style="width: {distroA.attributes[key] * 20}%; background: {distroA.color}; box-shadow: 0 0 10px {distroA.color}40"></div>
+                  </div>
+                  <span class="text-xs font-mono text-[#888] font-bold">{distroA.attributes[key]}</span>
                 </div>
-             </div>
-             <div class="spec-col">
-                <span class="spec-label">{distroB.name}</span>
-                <div class="tags">
-                  {#each distroB.package_managers as pm}
-                    <code class="pm-code">{pm}</code>
-                  {/each}
+              </td>
+              <td class="p-5 px-8 border-b border-[#1a1a1a]">
+                <div class="flex items-center gap-4">
+                  <div class="flex-1 h-1.5 bg-[#111] rounded-full overflow-hidden max-w-[120px]">
+                    <div class="h-full rounded-full transition-all duration-1000" style="width: {distroB.attributes[key] * 20}%; background: {distroB.color}; box-shadow: 0 0 10px {distroB.color}40"></div>
+                  </div>
+                  <span class="text-xs font-mono text-[#888] font-bold">{distroB.attributes[key]}</span>
                 </div>
-             </div>
-          </div>
-       </section>
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
     </div>
 
-    <div class="actions-footer">
-       <a href="/distros/{distroA.slug}" class="btn btn-outline">Explore {distroA.name}</a>
-       <a href="/distros/{distroB.slug}" class="btn btn-outline">Explore {distroB.name}</a>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl p-8 flex flex-col gap-8 shadow-xl">
+          <h3 class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">System_Specs</h3>
+          <div class="space-y-6">
+            <div class="space-y-3">
+              <span class="text-[0.6rem] font-mono text-[#666] uppercase tracking-widest block">Package_Managers</span>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-wrap gap-1.5">
+                  {#each distroA.package_managers as pm}
+                    <code class="px-2 py-1 rounded bg-black border border-[#222] text-[#888] text-[0.65rem] font-mono">{pm}</code>
+                  {/each}
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  {#each distroB.package_managers as pm}
+                    <code class="px-2 py-1 rounded bg-black border border-[#222] text-[#888] text-[0.65rem] font-mono">{pm}</code>
+                  {/each}
+                </div>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <span class="text-[0.6rem] font-mono text-[#666] uppercase tracking-widest block">Core_Architectures</span>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="p-3 rounded-xl bg-black border border-[#222] text-sm text-white font-bold text-center">
+                  {distroA.based_on || 'IND_BASE'}
+                </div>
+                <div class="p-3 rounded-xl bg-black border border-[#222] text-sm text-white font-bold text-center">
+                  {distroB.based_on || 'IND_BASE'}
+                </div>
+              </div>
+            </div>
+          </div>
+       </div>
+
+       <div class="bg-[#0a0a0a] border border-[#222] rounded-2xl p-8 flex flex-col gap-8 shadow-xl">
+          <h3 class="text-[0.65rem] font-mono font-bold uppercase tracking-[0.3em] text-[#444]">UX_Environments</h3>
+          <div class="grid grid-cols-2 gap-6">
+             <div class="space-y-3">
+                <span class="text-[0.6rem] font-mono text-[#666] uppercase tracking-widest text-center block">{distroA.name}</span>
+                <ul class="flex flex-col gap-2">
+                  {#each distroA.desktop_environments as de}
+                    <li class="text-xs p-3 bg-black rounded-xl text-center border border-[#222] text-white font-bold">{de}</li>
+                  {/each}
+                </ul>
+             </div>
+             <div class="space-y-3">
+                <span class="text-[0.6rem] font-mono text-[#666] uppercase tracking-widest text-center block">{distroB.name}</span>
+                <ul class="flex flex-col gap-2">
+                  {#each distroB.desktop_environments as de}
+                    <li class="text-xs p-3 bg-black rounded-xl text-center border border-[#222] text-white font-bold">{de}</li>
+                  {/each}
+                </ul>
+             </div>
+          </div>
+       </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-center gap-4 pt-8">
+       <a href="/distros/{distroA.slug}" class="px-8 py-3.5 rounded-2xl bg-white text-black font-black text-sm hover:bg-[var(--accent)] hover:shadow-[0_0_30px_var(--accent-glow)] transition-all text-center">EXPLORE_{distroA.name.toUpperCase()}</a>
+       <a href="/distros/{distroB.slug}" class="px-8 py-3.5 rounded-2xl bg-[#111] text-white border border-[#222] font-black text-sm hover:border-[var(--accent)] transition-all text-center">EXPLORE_{distroB.name.toUpperCase()}</a>
     </div>
   </div>
 {:else}
-  <div class="empty-state" in:fade>
-    <div class="empty-illustration">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-columns-2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18"/></svg>
+  <div class="py-32 text-center border-2 border-dashed border-[#222] rounded-3xl opacity-0 animate-fade-in" in:fade>
+    <div class="w-20 h-20 rounded-2xl bg-[#0a0a0a] border border-[#222] flex items-center justify-center mx-auto mb-8 shadow-2xl">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M12 3v18"/></svg>
     </div>
-    <h2>Select two distributions to compare</h2>
-    <p>Choose from the dropdowns above to see a side-by-side analysis of features, attributes, and technical specs.</p>
+    <h2 class="text-3xl font-black text-white tracking-tighter mb-4">Initialization_Required</h2>
+    <p class="text-[#666] max-w-md mx-auto text-lg font-medium leading-relaxed">Please select two target distributions from the primary nodes above to execute differential analysis.</p>
   </div>
 {/if}
 
 <style>
-  /* ── Selection Grid ── */
-  .selection-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 4rem;
-  }
-
-  .selector-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    transition: border-color var(--transition);
-    border-top: 3px solid var(--distro-color, var(--border));
-  }
-
-  .selector-card label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-subtle);
-  }
-
-  .distro-select {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.75rem;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .distro-select:focus {
-    border-color: var(--primary);
-  }
-
-  .vs-divider {
-    font-family: var(--font-mono);
-    font-weight: 800;
-    color: var(--text-subtle);
-    font-size: 1.25rem;
-    background: var(--bg-elevated);
-    width: 3rem;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-  }
-
-  .selected-preview {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: var(--radius-lg);
-  }
-
-  .preview-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-elevated);
-    border-radius: var(--radius);
-    color: var(--distro-color, var(--text-muted));
-  }
-  .preview-icon svg { width: 20px; height: 20px; }
-
-  .preview-text { min-width: 0; }
-  .preview-name { display: block; font-weight: 700; font-size: 0.95rem; }
-  .preview-tagline { display: block; font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  /* ── Comparison Table ── */
-  .comparison-section {
-    margin-bottom: 4rem;
-  }
-
-  .section-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: var(--text-muted);
-  }
-
-  .comparison-table-wrapper {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-  }
-
-  .comparison-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .comparison-table th {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 1.25rem;
-    text-align: left;
-    font-size: 1rem;
-    font-weight: 800;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .comparison-table td {
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  .attr-name {
-    font-weight: 600;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    width: 200px;
-  }
-
-  .score-cell {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .score-pips { display: flex; gap: 4px; }
-  .pip {
-    width: 12px; height: 6px; border-radius: 2px;
-    background: var(--bg-elevated);
-  }
-  .pip.on { background: var(--p-color, var(--primary)); }
-  .score-num { font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-subtle); }
-
-  /* ── Specs Grid ── */
-  .specs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .spec-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: 1.5rem;
-  }
-
-  .spec-card h3 {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-subtle);
-    margin-bottom: 1.25rem;
-    text-align: center;
-  }
-
-  .spec-comparison {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .spec-val {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0.75rem;
-    background: var(--bg-elevated);
-    border-radius: var(--radius);
-  }
-
-  .spec-label { font-size: 0.85rem; font-weight: 600; }
-
-  .spec-comparison-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .spec-col { display: flex; flex-direction: column; gap: 0.5rem; }
-  .spec-col .spec-label { color: var(--text-subtle); font-size: 0.7rem; text-transform: uppercase; margin-bottom: 0.25rem; text-align: center;}
-
-  .spec-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .spec-list li { font-size: 0.85rem; padding: 0.35rem; background: var(--bg-elevated); border-radius: 4px; text-align: center; }
-
-  .pm-code {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    display: block;
-    margin-bottom: 0.25rem;
-    background: var(--bg-elevated);
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    text-align: center;
-    color: var(--accent);
-  }
-
-  /* ── Empty State ── */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: var(--bg-surface);
-    border: 2px dashed var(--border);
-    border-radius: var(--radius-xl);
-  }
-
-  .empty-illustration {
-    margin-bottom: 1.5rem;
-    color: var(--text-subtle);
-  }
-
-  .empty-state h2 { margin-bottom: 0.75rem; }
-  .empty-state p { color: var(--text-muted); max-width: 400px; margin: 0 auto; }
-
-  .actions-footer {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  .tags { display: flex; flex-direction: column; align-items: center; }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.2rem 0.65rem;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    white-space: nowrap;
-  }
-
-  @media (max-width: 768px) {
-    .selection-grid { grid-template-columns: 1fr; }
-    .vs-divider { margin: 0 auto; }
-    .comparison-table th { font-size: 0.85rem; }
-    .attr-name { width: 120px; font-size: 0.8rem; }
-  }
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
 </style>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://linux.juststeveking.com/sitemap-index.xml

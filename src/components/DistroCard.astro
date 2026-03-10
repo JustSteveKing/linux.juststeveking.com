@@ -1,5 +1,6 @@
 ---
 import { getDistroIcon } from '../utils/icons';
+import Tag from './ui/Tag.astro';
 
 interface Props {
   id: string;
@@ -17,304 +18,73 @@ interface Props {
     gaming: number;
     development: number;
   };
-  matchPercent?: number;
+  index?: number;
 }
 
-const { id, name, tagline, based_on, release_model, color, icon_slug, use_cases, attributes, matchPercent } = Astro.props;
+const { id, name, tagline, release_model, color = '#ffffff', icon_slug, use_cases, attributes, index = 0 } = Astro.props;
 const icon = getDistroIcon(icon_slug);
 
 const releaseLabel = { rolling: 'Rolling', fixed: 'Fixed', lts: 'LTS' }[release_model];
-const releaseClass = { rolling: 'release-rolling', fixed: 'release-fixed', lts: 'release-lts' }[release_model];
+const delay = `${index * 50}ms`;
 ---
 
-<a
+<a 
   href={`/distros/${id}`}
-  class="card"
-  style={color ? `--distro-color: ${color};` : ''}
+  class="group relative block bento-card-hover p-8 md:p-10 overflow-hidden h-full flex flex-col gap-8 opacity-0 animate-fade-up shadow-2xl shadow-black/40"
+  style={`--distro-color: ${color}; animation-delay: ${delay};`}
 >
-  <!-- Top accent bar using distro colour -->
-  <div class="card-accent" aria-hidden="true"></div>
-
-  {matchPercent !== undefined && (
-    <div class="match-row">
-      <div class="match-track">
-        <div class="match-fill" style={`width: ${matchPercent}%`}></div>
+  <div class="absolute -top-12 -right-12 w-48 h-48 bg-[var(--distro-color)] opacity-[0.03] blur-[60px] rounded-full group-hover:opacity-[0.08] transition-opacity duration-700"></div>
+  
+  <header class="flex items-start justify-between gap-6 relative z-10">
+    <div class="flex items-center gap-5">
+      <div class="w-14 h-14 rounded-xl bg-black border border-[#222] flex items-center justify-center group-hover:border-[var(--distro-color)] group-hover:scale-105 transition-all duration-500 shadow-xl">
+        {icon ? (
+          <svg viewBox="0 0 24 24" class="w-7 h-7 fill-white group-hover:fill-[var(--distro-color)] transition-colors duration-500">
+            <path d={icon.path} />
+          </svg>
+        ) : (
+          <span class="text-2xl font-black text-white group-hover:text-[var(--distro-color)] transition-colors duration-500">{name[0]}</span>
+        )}
       </div>
-      <span class="match-pct">{Math.round(matchPercent)}%</span>
+      <div>
+        <h3 class="text-xl font-black tracking-tight text-white group-hover:text-[var(--distro-color)] transition-colors duration-500">{name}</h3>
+        <p class="text-[0.65rem] font-mono text-[#666] uppercase tracking-[0.2em] mt-1">{releaseLabel} Build</p>
+      </div>
     </div>
-  )}
+  </header>
 
-  <div class="card-header">
-    <div class="distro-icon">
-      {icon ? (
-        <svg viewBox="0 0 24 24" class="distro-logo" aria-hidden="true">
-          <path d={icon.path} />
-        </svg>
-      ) : (
-        <span class="distro-initial">{name[0]}</span>
-      )}
+  <p class="text-[0.95rem] text-[#999] leading-relaxed line-clamp-2 relative z-10 flex-1 group-hover:text-white transition-colors duration-500">
+    {tagline}
+  </p>
+
+  <div class="space-y-5 relative z-10">
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between items-center text-[0.65rem] font-mono text-[#555] uppercase tracking-widest">
+        <span>User Friendly</span>
+        <span class="text-[#888]">{attributes.beginner_friendly}/5</span>
+      </div>
+      <div class="flex gap-1.5 h-1">
+        {Array.from({ length: 5 }, (_, i) => (
+          <div class:list={["flex-1 rounded-full transition-all duration-700", i < attributes.beginner_friendly ? "bg-white group-hover:bg-[var(--distro-color)] shadow-[0_0_10px_var(--distro-color)]" : "bg-[#111]"]}></div>
+        ))}
+      </div>
     </div>
-    <div class="card-title-group">
-      <h3 class="distro-name">{name}</h3>
-      <p class="distro-tagline">{tagline}</p>
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between items-center text-[0.65rem] font-mono text-[#555] uppercase tracking-widest">
+        <span>Development</span>
+        <span class="text-[#888]">{attributes.development}/5</span>
+      </div>
+      <div class="flex gap-1.5 h-1">
+        {Array.from({ length: 5 }, (_, i) => (
+          <div class:list={["flex-1 rounded-full transition-all duration-700", i < attributes.development ? "bg-white group-hover:bg-[var(--distro-color)] shadow-[0_0_10px_var(--distro-color)]" : "bg-[#111]"]}></div>
+        ))}
+      </div>
     </div>
   </div>
 
-  <div class="card-badges">
-    <span class:list={['badge', 'badge-release', releaseClass]}>{releaseLabel}</span>
-    {based_on && <span class="badge">↗ {based_on}</span>}
-    {use_cases.slice(0, 2).map(uc => (
-      <span class="badge badge-use">{uc}</span>
+  <div class="flex flex-wrap gap-2.5 mt-2 relative z-10">
+    {use_cases.slice(0, 3).map(uc => (
+      <Tag variant="default" class="text-[0.6rem] py-1.5 px-3">{uc}</Tag>
     ))}
   </div>
-
-  <div class="attr-grid">
-    <div class="attr">
-      <span class="attr-label">Beginner</span>
-      <div class="attr-pips">
-        {Array.from({ length: 5 }, (_, i) => (
-          <span class:list={['pip', { on: i < attributes.beginner_friendly }]}></span>
-        ))}
-      </div>
-    </div>
-    <div class="attr">
-      <span class="attr-label">Out-of-box</span>
-      <div class="attr-pips">
-        {Array.from({ length: 5 }, (_, i) => (
-          <span class:list={['pip', { on: i < attributes.out_of_box }]}></span>
-        ))}
-      </div>
-    </div>
-    <div class="attr">
-      <span class="attr-label">Gaming</span>
-      <div class="attr-pips">
-        {Array.from({ length: 5 }, (_, i) => (
-          <span class:list={['pip', { on: i < attributes.gaming }]}></span>
-        ))}
-      </div>
-    </div>
-    <div class="attr">
-      <span class="attr-label">Dev</span>
-      <div class="attr-pips">
-        {Array.from({ length: 5 }, (_, i) => (
-          <span class:list={['pip', { on: i < attributes.development }]}></span>
-        ))}
-      </div>
-    </div>
-  </div>
 </a>
-
-<style>
-  .card {
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.25rem;
-    padding-top: 1.125rem;
-    background: var(--bg-surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    color: var(--text);
-    text-decoration: none;
-    overflow: hidden;
-    transition:
-      border-color var(--transition),
-      box-shadow var(--transition),
-      transform var(--transition);
-  }
-
-  .card:hover {
-    border-color: var(--distro-color, var(--primary));
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--distro-color, var(--primary)) 40%, transparent),
-      0 8px 32px color-mix(in srgb, var(--distro-color, var(--primary)) 10%, transparent);
-    transform: translateY(-3px);
-  }
-
-  /* Coloured top accent bar */
-  .card-accent {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--distro-color, var(--border));
-    opacity: 0.6;
-    transition: opacity var(--transition);
-  }
-
-  .card:hover .card-accent {
-    opacity: 1;
-  }
-
-  /* Match bar */
-  .match-row {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding-bottom: 0.875rem;
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  .match-track {
-    flex: 1;
-    height: 3px;
-    background: var(--bg-elevated);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-
-  .match-fill {
-    height: 100%;
-    background: var(--accent-green);
-    border-radius: 999px;
-  }
-
-  .match-pct {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent-green);
-    font-family: var(--font-mono);
-    min-width: 2.5rem;
-    text-align: right;
-  }
-
-  /* Header */
-  .card-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.875rem;
-  }
-
-  .distro-icon {
-    flex-shrink: 0;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: var(--radius);
-    background: color-mix(in srgb, var(--distro-color, var(--primary)) 12%, var(--bg-elevated));
-    border: 1px solid color-mix(in srgb, var(--distro-color, var(--border)) 40%, transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background var(--transition), border-color var(--transition);
-  }
-
-  .card:hover .distro-icon {
-    background: color-mix(in srgb, var(--distro-color, var(--primary)) 18%, var(--bg-elevated));
-  }
-
-  .distro-logo {
-    width: 22px;
-    height: 22px;
-    fill: var(--distro-color, var(--text-muted));
-    transition: fill var(--transition);
-  }
-
-  .distro-initial {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--distro-color, var(--text-muted));
-    letter-spacing: -0.02em;
-  }
-
-  .card-title-group { flex: 1; min-width: 0; }
-
-  .distro-name {
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.15rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .distro-tagline {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    line-height: 1.35;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* Badges */
-  .card-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-  }
-
-  .badge-release {
-    font-weight: 600;
-  }
-
-  .release-rolling {
-    color: var(--accent);
-    background: var(--accent-dim);
-    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-  }
-
-  .release-lts {
-    color: var(--accent-green);
-    background: var(--accent-green-dim);
-    border-color: color-mix(in srgb, var(--accent-green) 30%, transparent);
-  }
-
-  .release-fixed {
-    color: var(--primary);
-    background: var(--primary-dim);
-    border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-  }
-
-  .badge-use {
-    color: var(--text-muted);
-    background: var(--bg-hover);
-    border-color: var(--border);
-  }
-
-  /* Attribute pips */
-  .attr-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.625rem 1rem;
-    margin-top: auto;
-  }
-
-  .attr {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .attr-label {
-    font-size: 0.67rem;
-    color: var(--text-subtle);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 600;
-  }
-
-  .attr-pips {
-    display: flex;
-    gap: 3px;
-    align-items: center;
-  }
-
-  .pip {
-    width: 10px;
-    height: 4px;
-    border-radius: 2px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-subtle);
-    transition: background var(--transition), border-color var(--transition);
-  }
-
-  .pip.on {
-    background: var(--distro-color, var(--primary));
-    border-color: var(--distro-color, var(--primary));
-  }
-</style>

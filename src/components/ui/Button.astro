@@ -1,0 +1,55 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'glass' | 'none';
+  size?: 'sm' | 'md' | 'lg' | 'icon';
+  href?: string;
+  class?: string;
+  id?: string;
+  shine?: boolean;
+  [key: string]: any;
+}
+
+const { 
+  variant = 'primary', 
+  size = 'md', 
+  href, 
+  class: className,
+  id,
+  shine = false,
+  ...rest 
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+
+const baseStyles = "relative inline-flex items-center justify-center gap-2 rounded-brand font-medium transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:pointer-events-none no-underline overflow-hidden";
+
+const variants = {
+  primary: "bg-primary text-white shadow-[0_1px_2px_rgba(0,0,0,0.1),0_0_0_1px_rgba(255,255,255,0.1)_inset] hover:bg-primary-hover hover:shadow-[0_0_20px_var(--primary-glow)] hover:-translate-y-0.5",
+  secondary: "bg-brand-elevated text-brand-text border border-brand-border hover:bg-brand-hover hover:border-brand-text/20",
+  outline: "bg-transparent text-brand-muted border border-brand-border hover:border-primary hover:text-primary hover:bg-primary-dim",
+  ghost: "bg-transparent text-brand-muted hover:bg-brand-elevated hover:text-brand-text",
+  glass: "glass text-brand-text hover:bg-brand-hover/50 hover:border-brand-text/20",
+  none: ""
+};
+
+const sizes = {
+  sm: "px-3 py-1.5 text-[0.8rem]",
+  md: "px-5 py-2.5 text-[0.875rem]",
+  lg: "px-7 py-3.5 text-base",
+  icon: "w-10 h-10 p-0"
+};
+
+const classes = [
+  variant !== 'none' ? baseStyles : '',
+  variants[variant],
+  sizes[size],
+  className
+].filter(Boolean).join(' ');
+---
+
+<Tag href={href} class={classes} id={id} {...rest}>
+  {shine && variant === 'primary' && (
+    <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer pointer-events-none" />
+  )}
+  <slot />
+</Tag>

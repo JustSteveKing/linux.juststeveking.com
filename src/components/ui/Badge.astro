@@ -1,0 +1,24 @@
+---
+interface Props {
+  variant?: 'default' | 'primary' | 'accent' | 'green';
+  class?: string;
+  [key: string]: any;
+}
+
+const { variant = 'default', class: className, ...rest } = Astro.props;
+
+const baseStyles = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.7rem] font-bold tracking-wider uppercase whitespace-nowrap border transition-all duration-200";
+
+const variants = {
+  default: "bg-brand-elevated border-brand-border text-brand-muted hover:border-brand-text/20 hover:text-brand-text",
+  primary: "bg-primary-dim border-primary/20 text-primary shadow-[0_0_10px_rgba(139,92,246,0.1)]",
+  accent: "bg-accent-dim border-accent/20 text-accent shadow-[0_0_10px_rgba(245,158,11,0.1)]",
+  green: "bg-accent-green-dim border-accent-green/20 text-accent-green shadow-[0_0_10px_rgba(16,185,129,0.1)]"
+};
+
+const classes = [baseStyles, variants[variant], className].filter(Boolean).join(' ');
+---
+
+<span class={classes} {...rest}>
+  <slot />
+</span>

@@ -1,0 +1,37 @@
+---
+interface Props {
+  class?: string;
+  hover?: boolean;
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  as?: any;
+  [key: string]: any;
+}
+
+const { 
+  class: className = '', 
+  hover = false, 
+  padding = 'lg',
+  as: Tag = 'div',
+  ...rest 
+} = Astro.props;
+
+const paddings = {
+  none: '',
+  sm: 'p-4 md:p-5',
+  md: 'p-6 md:p-8',
+  lg: 'p-8 md:p-12'
+};
+---
+
+<Tag 
+  class:list={[
+    hover ? 'bento-card-hover' : 'bento-card',
+    paddings[padding],
+    'relative group shadow-lg',
+    className
+  ]} 
+  {...rest}
+>
+  <div class="absolute inset-0 bg-linear-to-tr from-white/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+  <slot />
+</Tag>

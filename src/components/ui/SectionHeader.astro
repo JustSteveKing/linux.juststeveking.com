@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  centered?: boolean;
+  class?: string;
+}
+
+const { title, subtitle, centered = false, class: className } = Astro.props;
+---
+
+<header class:list={[
+  "flex flex-col gap-3 mb-12",
+  centered && "items-center text-center",
+  className
+]}>
+  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-dim border border-primary/20 text-primary text-[0.7rem] font-bold tracking-wider uppercase w-fit">
+    <slot name="badge" />
+  </div>
+  <h2 class="text-3xl sm:text-4xl md:text-5xl font-black gradient-text">
+    {title}
+  </h2>
+  {subtitle && (
+    <p class="text-lg text-brand-muted max-w-[600px] leading-relaxed">
+      {subtitle}
+    </p>
+  )}
+</header>

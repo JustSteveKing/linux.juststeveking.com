@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  index?: number;
+}
+
+const { title, description, index = 0 } = Astro.props;
+const delay = `${index * 0.1}s`;
+---
+
+<li class="flex gap-4 items-start animate-in" style={`animation-delay: ${delay}; opacity: 0;`}>
+  <div class="shrink-0 w-9 h-9 rounded-brand bg-primary-dim border border-primary/25 flex items-center justify-center text-primary mt-0.5">
+    <slot name="icon" />
+  </div>
+  <div>
+    <h3 class="text-[0.9rem] font-semibold mb-1 tracking-tight">{title}</h3>
+    <p class="text-[0.84rem] text-brand-muted leading-relaxed">{description}</p>
+  </div>
+</li>

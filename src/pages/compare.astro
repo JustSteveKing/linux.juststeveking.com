@@ -1,67 +1,42 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import CompareTool from '../components/CompareTool.svelte';
 import { getCollection } from 'astro:content';
 import { getDistroIcon } from '../utils/icons';
-import CompareTool from '../components/CompareTool.svelte';
 
 const distrosRaw = await getCollection('distros');
-const searchParams = Astro.url.searchParams;
-const initialA = searchParams.get('a');
-const initialB = searchParams.get('b');
-
-// Prepare data for Svelte
-const allDistros = distrosRaw.map(d => ({
+const distros = distrosRaw.map(d => ({
   id: d.id,
   name: d.data.name,
   tagline: d.data.tagline,
+  color: d.data.color || '#00ff66',
   icon_slug: d.data.icon_slug,
-  color: d.data.color || '#7c6cf5',
-  slug: d.id,
-  based_on: d.data.based_on,
+  attributes: d.data.attributes,
   release_model: d.data.release_model,
+  based_on: d.data.based_on,
   use_cases: d.data.use_cases,
   desktop_environments: d.data.desktop_environments,
   package_managers: d.data.package_managers,
-  attributes: d.data.attributes,
+  slug: d.id,
   iconPath: getDistroIcon(d.data.icon_slug)?.path || '',
 })).sort((a, b) => a.name.localeCompare(b.name));
 ---
 
-<Layout title="Compare Distributions — DistroFind">
-  <div class="container compare-page">
-    <header class="page-header">
-      <h1>Compare Distributions</h1>
-      <p class="subtitle">Side-by-side analysis of Linux distributions</p>
+<Layout
+  title="Compare Linux Distributions Side-by-Side"
+  description="Execute a differential analysis between Linux distributions. Compare stability, gaming performance, and developer tooling side-by-side."
+>
+  <div class="py-12 md:py-20 opacity-0 animate-fade-in">
+    <header class="mb-16 border-b border-[#222] pb-16">
+      <div class="inline-flex items-center gap-2 mb-6 text-[var(--accent)] font-mono text-xs uppercase tracking-[0.3em] font-bold">
+        Cross_Reference.init()
+      </div>
+      <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-white mb-6 leading-tight">Compare <span class="text-[#444]">/</span> Benchmarks</h1>
+      <p class="text-[#888] text-xl max-w-2xl font-medium leading-relaxed">
+        Execute a side-by-side differential analysis of up to two operating systems across our primary scoring vectors.
+      </p>
     </header>
 
-    <CompareTool 
-      client:load 
-      allDistros={allDistros} 
-      initialA={initialA} 
-      initialB={initialB} 
-    />
+    <CompareTool client:load distros={distros} />
   </div>
 </Layout>
-
-<style>
-  .compare-page {
-    padding: 3rem 0 6rem;
-  }
-
-  .page-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-  }
-
-  .page-header h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    margin-bottom: 0.5rem;
-  }
-
-  .subtitle {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-  }
-</style>

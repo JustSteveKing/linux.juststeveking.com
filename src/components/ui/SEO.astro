@@ -1,0 +1,70 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalURL?: URL | string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  image,
+  canonicalURL = Astro.url,
+  type = 'website',
+} = Astro.props;
+
+// Determine the default OG image based on page slug or distro id
+// We default to the 'dark' version as it matches the site aesthetic
+let ogImage = image;
+if (!ogImage) {
+  const path = Astro.url.pathname.replace(/^\/|\/$/g, '') || 'index';
+  const slug = path.split('/').pop() || 'index';
+  ogImage = `/og/${slug}-dark.png`;
+}
+
+const siteTitle = title 
+  ? `${title} | DistroFind` 
+  : 'DistroFind | Linux OS Discovery & Comparison Engine';
+
+const siteDescription = description || 'The ultimate tool to discover, compare, and find the perfect Linux distribution for your needs. Algorithmic matching for developers, gamers, and enthusiasts.';
+
+const socialImageURL = new URL(ogImage, Astro.url);
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{siteTitle}</title>
+<meta name="title" content={siteTitle} />
+<meta name="description" content={siteDescription} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={siteDescription} />
+<meta property="og:image" content={socialImageURL} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={siteTitle} />
+<meta property="twitter:description" content={siteDescription} />
+<meta property="twitter:image" content={socialImageURL} />
+
+<!-- Theme color -->
+<meta name="theme-color" content="#00ff66" />
+
+<!-- Additional SEO -->
+<meta name="robots" content="index, follow" />
+<meta name="googlebot" content="index, follow" />
+<link rel="sitemap" href="/sitemap-index.xml" />

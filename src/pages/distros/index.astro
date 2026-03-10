@@ -5,204 +5,101 @@ import { getCollection } from 'astro:content';
 
 const distros = await getCollection('distros');
 const sorted = distros.sort((a, b) => a.data.name.localeCompare(b.data.name));
-
-// Collect all unique use cases for the filter bar
 const allUseCases = [...new Set(distros.flatMap(d => d.data.use_cases))].sort();
 ---
 
-<Layout
-  title="Browse Linux Distributions — DistroFind"
-  description="Explore our curated collection of Linux distributions with detailed attribute scores."
+<Layout 
+  title="Explore All Linux Distributions" 
+  description="Browse our comprehensive registry of Linux distributions. Filter by use-case, analyze technical vectors, and find the right OS for your workflow."
 >
-  <div class="container page">
-    <header class="page-header">
-      <div>
-        <h1>Browse distributions</h1>
-        <p class="page-subtitle">
-          <span id="visible-count">{sorted.length}</span> of {sorted.length} distributions
-        </p>
+  <div class="py-12 md:py-20">
+    <header class="mb-16 border-b border-[#222] pb-16 opacity-0 animate-fade-in">
+      <div class="inline-flex items-center gap-2 mb-6 text-[var(--accent)] font-mono text-xs uppercase tracking-[0.3em] font-bold">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+        Distro Registry
       </div>
-      <a href="/finder" class="btn btn-primary btn-sm">Find my distro →</a>
+      <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-white mb-6 leading-tight">Registry <span class="text-[#444]">/</span> Catalog</h1>
+      <p class="text-[#888] text-xl max-w-2xl font-medium leading-relaxed">
+        Our complete laboratory index of Linux operating systems, analyzed and graded across critical technical vectors.
+      </p>
     </header>
 
-    <!-- Use-case filter -->
-    <div class="filter-bar" role="group" aria-label="Filter by use case">
-      <button class="filter-pill active" data-filter="all">All</button>
-      {allUseCases.map(uc => (
-        <button class="filter-pill" data-filter={uc}>{uc}</button>
-      ))}
-    </div>
+    <div class="flex flex-col gap-12">
+      <div class="flex flex-wrap gap-2.5 filter-bar opacity-0 animate-fade-in animate-delay-100" role="group">
+        <button class="filter-pill px-5 py-2 rounded-lg text-[0.65rem] font-mono uppercase tracking-[0.2em] font-black border border-[#222] bg-[#0a0a0a] text-white hover:border-[var(--accent)] transition-all cursor-pointer active shadow-lg" data-filter="all">All_Distros</button>
+        {allUseCases.map(uc => (
+          <button class="filter-pill px-5 py-2 rounded-lg text-[0.65rem] font-mono uppercase tracking-[0.2em] font-black border border-[#222] bg-transparent text-[#666] hover:text-white hover:border-[#444] transition-all cursor-pointer shadow-sm" data-filter={uc}>{uc.replace(' ', '_')}</button>
+        ))}
+      </div>
 
-    <!-- Grid -->
-    <div class="distro-grid" id="distro-grid">
-      {sorted.map(d => (
-        <div class="card-wrap" data-uses={d.data.use_cases.join(',')}>
-          <DistroCard
-            id={d.id}
-            name={d.data.name}
-            tagline={d.data.tagline}
-            based_on={d.data.based_on}
-            release_model={d.data.release_model}
-            color={d.data.color}
-            icon_slug={d.data.icon_slug}
-            use_cases={d.data.use_cases}
-            attributes={d.data.attributes}
-          />
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="distro-grid">
+        {sorted.map((d, i) => (
+          <div class="card-wrap transition-all duration-500" data-uses={d.data.use_cases.join(',')}>
+            <DistroCard
+              id={d.id}
+              name={d.data.name}
+              tagline={d.data.tagline}
+              based_on={d.data.based_on}
+              release_model={d.data.release_model}
+              color={d.data.color}
+              icon_slug={d.data.icon_slug}
+              use_cases={d.data.use_cases}
+              attributes={d.data.attributes}
+              index={i}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="hidden py-32 text-center border-2 border-dashed border-[#222] rounded-2xl opacity-0 animate-fade-in" id="empty-state">
+        <div class="w-16 h-16 rounded-xl bg-[#0a0a0a] border border-[#222] flex items-center justify-center mx-auto mb-6">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
-      ))}
+        <p class="text-[#666] font-mono text-xs uppercase tracking-[0.3em] font-black">Null Reference: No distros match criteria.</p>
+      </div>
     </div>
-
-    <!-- Empty state -->
-    <p class="empty-state hidden" id="empty-state">
-      No distributions match that filter.
-      <button class="reset-link" id="reset-filter">Show all</button>
-    </p>
   </div>
 </Layout>
 
 <script>
-  function initFilterBar() {
-    const filterBar = document.querySelector<HTMLElement>('.filter-bar');
-    if (!filterBar || filterBar.dataset.bound === 'true') return;
+  function initFilters() {
+    const bar = document.querySelector('.filter-bar');
+    if (!bar || bar.dataset.init === 'true') return;
 
-    const pills = filterBar.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const pills = bar.querySelectorAll<HTMLButtonElement>('.filter-pill');
     const cards = document.querySelectorAll<HTMLElement>('.card-wrap');
-    const countEl = document.getElementById('visible-count');
-    const emptyEl = document.getElementById('empty-state');
-    const resetBtn = document.getElementById('reset-filter');
-
-    if (!pills.length || !cards.length || !countEl || !emptyEl || !resetBtn) return;
-
-    const applyFilter = (filter: string) => {
-      let visible = 0;
-      cards.forEach(card => {
-        const uses = card.dataset.uses ?? '';
-        const show = filter === 'all' || uses.split(',').includes(filter);
-        card.classList.toggle('hidden', !show);
-        if (show) visible++;
-      });
-
-      countEl.textContent = String(visible);
-      emptyEl.classList.toggle('hidden', visible > 0);
-      pills.forEach(p => p.classList.toggle('active', p.dataset.filter === filter));
-    };
+    const empty = document.getElementById('empty-state');
 
     pills.forEach(pill => {
-      pill.addEventListener('click', () => applyFilter(pill.dataset.filter ?? 'all'));
+      pill.addEventListener('click', () => {
+        const filter = pill.dataset.filter!;
+        
+        pills.forEach(p => {
+          if(p === pill) {
+            p.classList.add('bg-[#0a0a0a]', 'text-white', 'border-[var(--accent)]', 'shadow-[0_0_20px_var(--accent-glow)]');
+            p.classList.remove('bg-transparent', 'text-[#666]', 'border-[#222]');
+          } else {
+            p.classList.remove('bg-[#0a0a0a]', 'text-white', 'border-[var(--accent)]', 'shadow-[0_0_20px_var(--accent-glow)]');
+            p.classList.add('bg-transparent', 'text-[#666]', 'border-[#222]');
+          }
+        });
+
+        let visible = 0;
+        cards.forEach(card => {
+          const show = filter === 'all' || card.dataset.uses?.split(',').includes(filter);
+          card.style.opacity = show ? '1' : '0';
+          card.style.transform = show ? 'scale(1)' : 'scale(0.95)';
+          setTimeout(() => {
+            card.style.display = show ? 'block' : 'none';
+          }, 300);
+          if (show) visible++;
+        });
+
+        if(empty) empty.classList.toggle('hidden', visible > 0);
+      });
     });
-
-    resetBtn.addEventListener('click', () => applyFilter('all'));
-    filterBar.dataset.bound = 'true';
+    bar.dataset.init = 'true';
   }
-
-  initFilterBar();
-  document.addEventListener('astro:page-load', initFilterBar);
+  initFilters();
+  document.addEventListener('astro:page-load', initFilters);
 </script>
-
-<style>
-  .page {
-    padding: 3rem 0 5rem;
-  }
-
-  .page-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 1.75rem;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .page-header h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: 0.3rem;
-  }
-
-  .page-subtitle {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-  }
-
-  /* ── Filter bar ── */
-  .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .filter-pill {
-    padding: 0.35rem 0.875rem;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--bg-surface);
-    color: var(--text-muted);
-    transition: all var(--transition);
-    text-transform: capitalize;
-    letter-spacing: 0.01em;
-  }
-
-  .filter-pill:hover {
-    border-color: var(--primary);
-    color: var(--text);
-    background: var(--primary-dim);
-  }
-
-  .filter-pill.active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-    box-shadow: 0 0 12px var(--primary-glow);
-  }
-
-  /* ── Grid ── */
-  .distro-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-    gap: 1rem;
-  }
-
-  .card-wrap {
-    height: 100%;
-    transition: opacity var(--transition), transform var(--transition);
-  }
-
-  .card-wrap.hidden {
-    display: none;
-  }
-
-  /* ── Empty state ── */
-  .empty-state {
-    text-align: center;
-    padding: 3rem 0;
-    color: var(--text-muted);
-    font-size: 0.95rem;
-  }
-
-  .empty-state.hidden {
-    display: none;
-  }
-
-  .reset-link {
-    background: none;
-    border: none;
-    color: var(--primary);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    padding: 0;
-    margin-left: 0.25rem;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .reset-link:hover {
-    color: var(--primary-hover);
-  }
-</style>

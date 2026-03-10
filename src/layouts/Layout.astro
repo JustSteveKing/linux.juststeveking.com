@@ -4,411 +4,96 @@ import '../styles/global.css';
 import { ViewTransitions } from 'astro:transitions';
 import CommandPalette from '../components/CommandPalette.svelte';
 import { getCollection } from 'astro:content';
-import { getDistroIcon } from '../utils/icons';
+import SEO from '../components/ui/SEO.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
-  title = 'DistroFind — Discover Your Linux Distribution',
-  description = 'Answer a few questions and find the Linux distribution that fits your needs perfectly.',
+  title,
+  description,
+  image,
 } = Astro.props;
 
-const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/distros', label: 'Browse' },
-  { href: '/finder', label: 'Find My Distro' },
-];
-
 const currentPath = Astro.url.pathname;
-
-// Fetch distros for the command palette
 const distrosRaw = await getCollection('distros');
 const distros = distrosRaw.map(d => ({
   id: d.id,
   name: d.data.name,
   tagline: d.data.tagline,
   icon_slug: d.data.icon_slug,
-  color: d.data.color || '#7c6cf5',
+  color: d.data.color || '#00ff66',
   slug: d.id,
   based_on: d.data.based_on,
   release_model: d.data.release_model,
   use_cases: d.data.use_cases,
   desktop_environments: d.data.desktop_environments,
-  searchContent: `${d.data.name} ${d.data.tagline} ${d.data.based_on || ''} ${d.data.desktop_environments.join(' ')} ${d.data.package_managers.join(' ')} ${d.data.use_cases.join(' ')}`.toLowerCase(),
-  iconPath: getDistroIcon(d.data.icon_slug)?.path || '',
+  searchContent: `${d.data.name} ${d.data.tagline}`.toLowerCase(),
+  iconPath: '',
 }));
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <SEO {title} {description} {image} />
     <ViewTransitions />
   </head>
-  <body>
-    <header id="site-header">
-      <div class="container nav-inner">
-        <a href="/" class="nav-logo">
-          <span class="logo-mark">$_</span>
-          DistroFind
+  <body class="antialiased selection:bg-[var(--accent)] selection:text-black">
+    <div class="fixed inset-0 pointer-events-none -z-10 bg-[url('/noise.png')] opacity-20 mix-blend-overlay"></div>
+
+    <header class="fixed top-0 inset-x-0 z-50 glass-panel border-b-0 border-b-[var(--border)] border-b">
+      <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3 text-white no-underline group">
+          <div class="w-8 h-8 rounded-lg bg-black border border-[#333] flex items-center justify-center group-hover:border-[var(--accent)] transition-colors">
+            <span class="font-mono text-[var(--accent)] text-sm font-bold">~</span>
+          </div>
+          <span class="font-bold tracking-tight text-lg">DistroFind</span>
         </a>
 
-        <!-- Desktop nav -->
-        <ul class="nav-links">
-          {nav.map(({ href, label }) => (
-            <li>
-              <a
-                href={href}
-                class:list={[
-                  'nav-link',
-                  { active: currentPath === href || (href !== '/' && currentPath.startsWith(href)) },
-                ]}
-              >
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="/distros" class:list={["transition-colors hover:text-white", currentPath.includes('/distros') ? "text-white" : "text-[var(--text-muted)]"]}>Catalog</a>
+          <a href="/compare" class:list={["transition-colors hover:text-white", currentPath.includes('/compare') ? "text-white" : "text-[var(--text-muted)]"]}>Compare</a>
+          <a href="/finder" class:list={["transition-colors hover:text-white", currentPath.includes('/finder') ? "text-white" : "text-[var(--text-muted)]"]}>Finder</a>
+        </nav>
 
-        <!-- CTA -->
-        <div class="nav-actions">
-          <button class="btn-search" id="search-trigger" aria-label="Search distributions">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <span class="search-kbd">⌘K</span>
+        <div class="flex items-center gap-3">
+          <button id="search-trigger" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#111] border border-[#222] text-[#888] text-xs font-mono hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all">
+            <span>Search</span>
+            <span class="px-1.5 py-0.5 rounded bg-black border border-[#333]">⌘K</span>
           </button>
-          <a href="/finder" class="btn btn-primary nav-cta">Find My Distro</a>
         </div>
-
-        <!-- Mobile hamburger -->
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-      <!-- Mobile menu -->
-      <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-        <ul>
-          {nav.map(({ href, label }) => (
-            <li>
-              <a
-                href={href}
-                class:list={[
-                  'mobile-link',
-                  { active: currentPath === href || (href !== '/' && currentPath.startsWith(href)) },
-                ]}
-              >
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
       </div>
     </header>
 
-    <main>
-      <slot />
+    <main class="min-h-screen pt-24 pb-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <slot />
+      </div>
     </main>
 
-    <footer>
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <span class="logo-mark">$_</span>
-          <span class="footer-name">DistroFind</span>
+    <footer class="border-t border-[var(--border)] bg-[#050505]">
+      <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-2">
+          <span class="font-mono text-[var(--text-muted)]">root@distrofind:~#</span>
+          <span class="w-2 h-4 bg-[var(--accent)] animate-pulse"></span>
         </div>
-        <p class="footer-text">
-          Helping you navigate the Linux landscape since 2025.
-        </p>
-        <p class="footer-note">
-          Attribute scores are curated estimates, not official benchmarks.
-          Always explore each distro's own documentation for the full picture.
+        <p class="text-sm text-[var(--text-muted)]">
+          Built for the Linux community. Open source forever.
         </p>
       </div>
     </footer>
 
+    <CommandPalette client:load distros={distros} />
+
     <script>
-      const hamburger = document.getElementById('hamburger')!;
-      const menu = document.getElementById('mobile-menu')!;
       const searchTrigger = document.getElementById('search-trigger');
-
-      hamburger.addEventListener('click', () => {
-        const open = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', String(!open));
-        menu.setAttribute('aria-hidden', String(open));
-        hamburger.classList.toggle('open', !open);
-        menu.classList.toggle('open', !open);
-      });
-
-      // Search trigger logic for Svelte component
       searchTrigger?.addEventListener('click', () => {
-        window.dispatchEvent(new KeyboardEvent('keydown', {
-          key: 'k',
-          metaKey: true,
-          bubbles: true
-        }));
-      });
-
-      // Close on nav
-      menu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          hamburger.setAttribute('aria-expanded', 'false');
-          menu.setAttribute('aria-hidden', 'true');
-          hamburger.classList.remove('open');
-          menu.classList.remove('open');
-        });
+        window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
       });
     </script>
-    <CommandPalette client:load distros={distros} />
   </body>
 </html>
-
-<style>
-  /* ── Header ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(7, 8, 15, 0.8);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    height: 3.75rem;
-    gap: 1.5rem;
-  }
-
-  /* ── Logo ── */
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--text);
-    text-decoration: none;
-    letter-spacing: -0.03em;
-    flex-shrink: 0;
-  }
-
-  .nav-logo:hover { color: var(--text); }
-
-  .logo-mark {
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--primary);
-    letter-spacing: -0.04em;
-  }
-
-  /* ── Desktop links ── */
-  .nav-links {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    gap: 0.125rem;
-    flex: 1;
-  }
-
-  .nav-actions {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .btn-search {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 0.75rem;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all var(--transition);
-  }
-
-  .btn-search:hover {
-    border-color: var(--primary);
-    color: var(--text);
-    background: var(--bg-hover);
-  }
-
-  .search-kbd {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--text-subtle);
-    background: var(--bg);
-    padding: 0.1rem 0.3rem;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    font-family: var(--font-mono);
-  }
-
-  .nav-link {
-    position: relative;
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius);
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: color var(--transition), background var(--transition);
-  }
-
-  .nav-link:hover {
-    color: var(--text);
-    background: var(--bg-elevated);
-  }
-
-  .nav-link.active {
-    color: var(--primary);
-    background: var(--primary-dim);
-  }
-
-  /* ── CTA ── */
-  .nav-cta {
-    padding: 0.45rem 1rem;
-    font-size: 0.82rem;
-  }
-
-  /* ── Hamburger ── */
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    width: 2.25rem;
-    height: 2.25rem;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    padding: 0;
-    transition: border-color var(--transition), background var(--transition);
-    flex-shrink: 0;
-  }
-
-  .hamburger:hover {
-    border-color: var(--primary);
-    background: var(--primary-dim);
-  }
-
-  .hamburger span {
-    display: block;
-    width: 16px;
-    height: 1.5px;
-    background: var(--text-muted);
-    border-radius: 2px;
-    transition: all var(--transition);
-    transform-origin: center;
-  }
-
-  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-  /* ── Mobile menu ── */
-  .mobile-menu {
-    display: none;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height var(--transition-slow), border-color var(--transition);
-    border-top: 1px solid transparent;
-  }
-
-  .mobile-menu.open {
-    max-height: 300px;
-    border-top-color: var(--border-subtle);
-  }
-
-  .mobile-menu ul {
-    list-style: none;
-    padding: 0.75rem 1.5rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .mobile-link {
-    display: block;
-    padding: 0.6rem 0.75rem;
-    border-radius: var(--radius);
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    transition: color var(--transition), background var(--transition);
-  }
-
-  .mobile-link:hover { color: var(--text); background: var(--bg-elevated); }
-  .mobile-link.active { color: var(--primary); background: var(--primary-dim); }
-
-  /* ── Main ── */
-  main {
-    min-height: calc(100vh - 3.75rem - 7rem);
-  }
-
-  /* ── Footer ── */
-  footer {
-    border-top: 1px solid var(--border-subtle);
-    padding: 2rem 0 2.5rem;
-    margin-top: 5rem;
-  }
-
-  .footer-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .footer-name {
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: -0.02em;
-    color: var(--text-muted);
-  }
-
-  .footer-text {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-  }
-
-  .footer-note {
-    font-size: 0.78rem;
-    color: var(--text-subtle);
-    max-width: 560px;
-    line-height: 1.5;
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 700px) {
-    .nav-links,
-    .nav-cta { display: none; }
-
-    .hamburger { display: flex; }
-    .mobile-menu { display: block; }
-
-    .nav-inner { gap: 1rem; }
-  }
-</style>
